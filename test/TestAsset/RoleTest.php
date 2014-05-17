@@ -9,22 +9,15 @@
 
 namespace ZendTest\Permissions\Rbac\TestAsset;
 
-use Zend\Permissions\Rbac\AssertionInterface;
-use Zend\Permissions\Rbac\Rbac;
+use Zend\Permissions\Rbac\AbstractRole;
 
-/**
- * @group      Zend_Rbac
- */
-class SimpleTrueAssertion implements AssertionInterface
+class RoleTest extends AbstractRole
 {
     /**
-     * Assertion method - must return a boolean.
-     *
-     * @param  Rbac    $bac
-     * @return bool
+     * @param string $name
      */
-    public function assert(Rbac $rbac)
+    public function __construct($name)
     {
-        return true;
+        $this->name = $name;
     }
 }
