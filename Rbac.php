@@ -110,10 +110,8 @@ class Rbac extends AbstractIterator
 
         $it = new RecursiveIteratorIterator($this, RecursiveIteratorIterator::CHILD_FIRST);
         foreach ($it as $leaf) {
-            /** @var RoleInterface $leaf */
-            if ((is_string($objectOrName) && $leaf->getName() == $objectOrName)
-                || (is_object($objectOrName) && $leaf->getName() == $objectOrName->getName())
-            ) {
+            /* @var RoleInterface $leaf */
+            if ((is_string($objectOrName) && $leaf->getName() == $objectOrName) || $leaf == $objectOrName) {
                 return $leaf;
             }
         }
