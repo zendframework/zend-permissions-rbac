@@ -108,16 +108,9 @@ class Rbac extends AbstractIterator
             );
         }
 
-        if (is_object($objectOrName)) {
-            $requiredRole = $objectOrName->getName();
-        } else {
-            $requiredRole = $objectOrName;
-        }
-
         $it = new RecursiveIteratorIterator($this, RecursiveIteratorIterator::CHILD_FIRST);
         foreach ($it as $leaf) {
-            /** @var RoleInterface $leaf */
-            if ($leaf->getName() == $requiredRole) {
+            if ((is_string($objectOrName) && $leaf->getName() == $objectOrName) || $leaf == $objectOrName) {
                 return $leaf;
             }
         }
@@ -134,7 +127,6 @@ class Rbac extends AbstractIterator
      * @param  RoleInterface|string             $role
      * @param  string                           $permission
      * @param  AssertionInterface|Callable|null $assert
-     * @throws Exception\InvalidArgumentException
      * @return bool
      */
     public function isGranted($role, $permission, $assert = null)
