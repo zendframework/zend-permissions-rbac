@@ -7,15 +7,17 @@
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
-namespace Zend\Permissions\Rbac;
+namespace ZendTest\Permissions\Rbac\TestAsset;
 
-interface AssertionInterface
+use Zend\Permissions\Rbac\AbstractRole;
+
+class RoleTest extends AbstractRole
 {
     /**
-     * Assertion method - must return a boolean.
-     *
-     * @param  Rbac    $rbac
-     * @return bool
+     * @param string $name
      */
-    public function assert(Rbac $rbac);
+    public function __construct($name)
+    {
+        $this->name = $name;
+    }
 }
