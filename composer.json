@@ -3,7 +3,7 @@
     "description": "provides a role-based access control management",
     "license": "BSD-3-Clause",
     "keywords": [
-        "zf2",
+        "zf3",
         "Rbac"
     ],
     "homepage": "https://github.com/zendframework/zend-permissions-rbac",
@@ -13,12 +13,12 @@
         }
     },
     "require": {
-        "php": ">=5.3.23"
+        "php": ">=5.5"
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.4-dev",
-            "dev-develop": "2.5-dev"
+            "dev-master": "3.0-dev",
+            "dev-develop": "3.1-dev"
         }
     },
     "autoload-dev": {
@@ -29,6 +29,6 @@
     "require-dev": {
         "fabpot/php-cs-fixer": "1.7.*",
         "satooshi/php-coveralls": "dev-master",
-        "phpunit/PHPUnit": "~4.0"
+        "phpunit/PHPUnit": "~4.4"
     }
 }
