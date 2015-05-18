@@ -3,171 +3,120 @@
  * Zend Framework (http://framework.zend.com/)
  *
  * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
 namespace ZendTest\Permissions\Rbac;
 
-use Zend\Permissions\Rbac;
+use ArrayIterator;
+use PHPUnit_Framework_TestCase as TestCase;
+use Zend\Permissions\Rbac\Rbac;
+use Zend\Permissions\Rbac\Role\Role;
+use Zend\Permissions\Rbac\Role\RoleInterface;
+use Zend\Permissions\Rbac\Traversal\Strategy\RecursiveRoleIteratorStrategy;
+use Zend\Permissions\Rbac\Traversal\Strategy\TraversalStrategyInterface;
 
 /**
- * @group      Zend_Rbac
+ * @covers Rbac\Rbac
+ * @group  Coverage
  */
-class RbacTest extends \PHPUnit_Framework_TestCase
+class RbacTest extends TestCase
 {
     /**
-     * @var \Zend\Permissions\Rbac\Rbac
+     * @covers Rbac\Rbac::__construct
      */
-    protected $rbac;
-
-    public function setUp()
+    public function testConstructorAcceptCustomTraversalStrategy()
     {
-        $this->rbac = new Rbac\Rbac();
-    }
+        $customStrategy = $this->getMock(TraversalStrategyInterface::class);
+        $rbac           = new Rbac($customStrategy);
 
-    public function testIsGrantedAssertion()
-    {
-        $foo = new Rbac\Role('foo');
-        $bar = new Rbac\Role('bar');
-
-        $true  = new TestAsset\SimpleTrueAssertion();
-        $false = new TestAsset\SimpleFalseAssertion();
-
-        $roleNoMatch = new TestAsset\RoleMustMatchAssertion($bar);
-        $roleMatch   = new TestAsset\RoleMustMatchAssertion($foo);
-
-        $foo->addPermission('can.foo');
-        $bar->addPermission('can.bar');
-
-        $this->rbac->addRole($foo);
-        $this->rbac->addRole($bar);
-
-        $this->assertEquals(true, $this->rbac->isGranted($foo, 'can.foo', $true));
-        $this->assertEquals(false, $this->rbac->isGranted($bar, 'can.bar', $false));
-
-        $this->assertEquals(false, $this->rbac->isGranted($bar, 'can.bar', $roleNoMatch));
-        $this->assertEquals(false, $this->rbac->isGranted($bar, 'can.foo', $roleNoMatch));
-
-        $this->assertEquals(true, $this->rbac->isGranted($foo, 'can.foo', $roleMatch));
-    }
-
-    public function testIsGrantedSingleRole()
-    {
-        $foo = new Rbac\Role('foo');
-        $foo->addPermission('can.bar');
-
-        $this->rbac->addRole($foo);
-
-        $this->assertEquals(true, $this->rbac->isGranted('foo', 'can.bar'));
-        $this->assertEquals(false, $this->rbac->isGranted('foo', 'can.baz'));
-    }
-
-    public function testIsGrantedChildRoles()
-    {
-        $foo = new Rbac\Role('foo');
-        $bar = new Rbac\Role('bar');
-
-        $foo->addPermission('can.foo');
-        $bar->addPermission('can.bar');
-
-        $this->rbac->addRole($foo);
-        $this->rbac->addRole($bar, $foo);
-
-        $this->assertEquals(true, $this->rbac->isGranted('foo', 'can.bar'));
-        $this->assertEquals(true, $this->rbac->isGranted('foo', 'can.foo'));
-        $this->assertEquals(true, $this->rbac->isGranted('bar', 'can.bar'));
-
-        $this->assertEquals(false, $this->rbac->isGranted('foo', 'can.baz'));
-        $this->assertEquals(false, $this->rbac->isGranted('bar', 'can.baz'));
+        $this->assertAttributeSame($customStrategy, 'traversalStrategy', $rbac);
     }
 
     /**
-     * @covers Zend\Permissions\Rbac\Rbac::hasRole()
+     * @covers Rbac\Rbac::isGranted
      */
-    public function testHasRole()
+    public function testInjectSingleRoleToArray()
     {
-        $foo = new Rbac\Role('foo');
-        $snafu = new TestAsset\RoleTest('snafu');
+        $role = new Role('Foo');
 
-        $this->rbac->addRole('bar');
-        $this->rbac->addRole($foo);
-        $this->rbac->addRole('snafu');
+        $traversalStrategy = $this->getMock(TraversalStrategyInterface::class);
+        $traversalStrategy->expects($this->once())
+            ->method('getRolesIterator')
+            ->with($this->equalTo([$role]))
+            ->will($this->returnValue(new ArrayIterator([])));
 
-        // check that the container has the same object $foo
-        $this->assertTrue($this->rbac->hasRole($foo));
+        $rbac = new Rbac($traversalStrategy);
 
-        // check that the container has the same string "bar"
-        $this->assertTrue($this->rbac->hasRole('bar'));
-
-        // check that the container do not have the string "baz"
-        $this->assertFalse($this->rbac->hasRole('baz'));
-
-        // check that we can compare two different objects with same name
-        $this->assertNotEquals($this->rbac->getRole('snafu'), $snafu);
-        $this->assertTrue($this->rbac->hasRole($snafu));
-    }
-
-    public function testAddRoleFromString()
-    {
-        $this->rbac->addRole('foo');
-
-        $foo = $this->rbac->getRole('foo');
-        $this->assertInstanceOf('Zend\Permissions\Rbac\Role', $foo);
-    }
-
-    public function testAddRoleFromClass()
-    {
-        $foo = new Rbac\Role('foo');
-
-        $this->rbac->addRole('foo');
-        $foo2 = $this->rbac->getRole('foo');
-
-        $this->assertEquals($foo, $foo2);
-        $this->assertInstanceOf('Zend\Permissions\Rbac\Role', $foo2);
-    }
-
-    public function testAddRoleWithParentsUsingRbac()
-    {
-        $foo = new Rbac\Role('foo');
-        $bar = new Rbac\Role('bar');
-
-        $this->rbac->addRole($foo);
-        $this->rbac->addRole($bar, $foo);
-
-        $this->assertEquals($bar->getParent(), $foo);
-        $this->assertEquals(1, count($foo->getChildren()));
-    }
-
-    public function testAddRoleWithAutomaticParentsUsingRbac()
-    {
-        $foo = new Rbac\Role('foo');
-        $bar = new Rbac\Role('bar');
-
-        $this->rbac->setCreateMissingRoles(true);
-        $this->rbac->addRole($bar, $foo);
-
-        $this->assertEquals($bar->getParent(), $foo);
-        $this->assertEquals(1, count($foo->getChildren()));
+        $rbac->isGranted($role, 'permission');
     }
 
     /**
-     * @tesdox Test adding custom child roles works
+     * @covers Rbac\Rbac::isGranted
      */
-    public function testAddCustomChildRole()
+    public function testFetchIteratorFromTraversalStrategy()
     {
-        $role = $this->getMockForAbstractClass('Zend\Permissions\Rbac\RoleInterface');
-        $this->rbac->setCreateMissingRoles(true)->addRole($role, array('parent'));
+        $traversalStrategy = $this->getMock(TraversalStrategyInterface::class);
+        $traversalStrategy->expects($this->once())
+            ->method('getRolesIterator')
+            ->will($this->returnValue(new ArrayIterator([])));
 
-        $role->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('customchild'));
+        $rbac = new Rbac($traversalStrategy);
 
-        $role->expects($this->once())
+        $rbac->isGranted([], 'permission');
+    }
+
+    /**
+     * @covers Rbac\Rbac::isGranted
+     */
+    public function testTraverseRoles()
+    {
+        $role = $this->getMock(RoleInterface::class);
+        $role->expects($this->exactly(3))
             ->method('hasPermission')
-            ->with('test')
+            ->with($this->equalTo('permission'))
+            ->will($this->returnValue(false));
+
+        $roles = [$role, $role, $role];
+        $rbac  = new Rbac(new RecursiveRoleIteratorStrategy());
+
+        $rbac->isGranted($roles, 'permission');
+    }
+
+    /**
+     * @covers Rbac\Rbac::isGranted
+     */
+    public function testReturnTrueWhenRoleHasPermission()
+    {
+        $grantedRole = $this->getMock(RoleInterface::class);
+        $grantedRole->expects($this->once())
+            ->method('hasPermission')
+            ->with('permission')
             ->will($this->returnValue(true));
 
-        $this->assertTrue($this->rbac->isGranted('parent', 'test'));
+        $nextRole = $this->getMock(RoleInterface::class);
+        $nextRole->expects($this->never())->method('hasPermission');
+
+        $roles = [$grantedRole, $nextRole];
+        $rbac  = new Rbac(new RecursiveRoleIteratorStrategy());
+
+        $this->assertTrue($rbac->isGranted($roles, 'permission'));
+    }
+
+    public function testReturnFalseIfNoRoleHasPermission()
+    {
+        $roles = [new Role('Foo'), new Role('Bar')];
+        $rbac  = new Rbac(new RecursiveRoleIteratorStrategy());
+
+        $this->assertFalse($rbac->isGranted($roles, 'permission'));
+    }
+
+    public function testGetTraversalStrategy()
+    {
+        $customStrategy = $this->getMock(TraversalStrategyInterface::class);
+        $rbac           = new Rbac($customStrategy);
+
+        $this->assertSame($customStrategy, $rbac->getTraversalStrategy());
     }
 }

@@ -3,156 +3,66 @@
  * Zend Framework (http://framework.zend.com/)
  *
  * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
 namespace Zend\Permissions\Rbac;
 
-use RecursiveIteratorIterator;
+use Zend\Permissions\Rbac\Role\RoleInterface;
+use Zend\Permissions\Rbac\Traversal\Strategy\TraversalStrategyInterface;
+use Traversable;
 
-class Rbac extends AbstractIterator
+/**
+ * Rbac object. It is used to check a permission against roles
+ */
+class Rbac
 {
     /**
-     * flag: whether or not to create roles automatically if
-     * they do not exist.
-     *
-     * @var bool
+     * @var TraversalStrategyInterface
      */
-    protected $createMissingRoles = false;
+    protected $traversalStrategy;
 
     /**
-     * @param  bool                     $createMissingRoles
-     * @return \Zend\Permissions\Rbac\Rbac
+     * @param TraversalStrategyInterface $strategy
      */
-    public function setCreateMissingRoles($createMissingRoles)
+    public function __construct(TraversalStrategyInterface $strategy)
     {
-        $this->createMissingRoles = $createMissingRoles;
-
-        return $this;
+        $this->traversalStrategy = $strategy;
     }
 
     /**
+     * Determines if access is granted by checking the roles for permission.
+     *
+     * @param  RoleInterface|RoleInterface[]|Traversable $roles
+     * @param  mixed                                     $permission
      * @return bool
      */
-    public function getCreateMissingRoles()
+    public function isGranted($roles, $permission)
     {
-        return $this->createMissingRoles;
+        if ($roles instanceof RoleInterface) {
+            $roles = [$roles];
+        }
+
+        $iterator = $this->traversalStrategy->getRolesIterator($roles);
+
+        foreach ($iterator as $role) {
+            /* @var RoleInterface $role */
+            if ($role->hasPermission($permission)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
-     * Add a child.
+     * Get the strategy.
      *
-     * @param  string|RoleInterface               $child
-     * @param  array|RoleInterface|null           $parents
-     * @return self
-     * @throws Exception\InvalidArgumentException
+     * @return TraversalStrategyInterface
      */
-    public function addRole($child, $parents = null)
+    public function getTraversalStrategy()
     {
-        if (is_string($child)) {
-            $child = new Role($child);
-        }
-        if (!$child instanceof RoleInterface) {
-            throw new Exception\InvalidArgumentException(
-                'Child must be a string or implement Zend\Permissions\Rbac\RoleInterface'
-            );
-        }
-
-        if ($parents) {
-            if (!is_array($parents)) {
-                $parents = array($parents);
-            }
-            foreach ($parents as $parent) {
-                if ($this->createMissingRoles && !$this->hasRole($parent)) {
-                    $this->addRole($parent);
-                }
-                $this->getRole($parent)->addChild($child);
-            }
-        }
-
-        $this->children[] = $child;
-
-        return $this;
-    }
-
-    /**
-     * Is a child with $name registered?
-     *
-     * @param  \Zend\Permissions\Rbac\RoleInterface|string $objectOrName
-     * @return bool
-     */
-    public function hasRole($objectOrName)
-    {
-        try {
-            $this->getRole($objectOrName);
-
-            return true;
-        } catch (Exception\InvalidArgumentException $e) {
-            return false;
-        }
-    }
-
-    /**
-     * Get a child.
-     *
-     * @param  \Zend\Permissions\Rbac\RoleInterface|string $objectOrName
-     * @return RoleInterface
-     * @throws Exception\InvalidArgumentException
-     */
-    public function getRole($objectOrName)
-    {
-        if (!is_string($objectOrName) && !$objectOrName instanceof RoleInterface) {
-            throw new Exception\InvalidArgumentException(
-                'Expected string or implement \Zend\Permissions\Rbac\RoleInterface'
-            );
-        }
-
-        if (is_object($objectOrName)) {
-            $requiredRole = $objectOrName->getName();
-        } else {
-            $requiredRole = $objectOrName;
-        }
-
-        $it = new RecursiveIteratorIterator($this, RecursiveIteratorIterator::CHILD_FIRST);
-        foreach ($it as $leaf) {
-            /** @var RoleInterface $leaf */
-            if ($leaf->getName() == $requiredRole) {
-                return $leaf;
-            }
-        }
-
-        throw new Exception\InvalidArgumentException(sprintf(
-            'No role with name "%s" could be found',
-            is_object($objectOrName) ? $objectOrName->getName() : $objectOrName
-        ));
-    }
-
-    /**
-     * Determines if access is granted by checking the role and child roles for permission.
-     *
-     * @param  RoleInterface|string             $role
-     * @param  string                           $permission
-     * @param  AssertionInterface|Callable|null $assert
-     * @throws Exception\InvalidArgumentException
-     * @return bool
-     */
-    public function isGranted($role, $permission, $assert = null)
-    {
-        if ($assert) {
-            if ($assert instanceof AssertionInterface) {
-                return (bool) $assert->assert($this);
-            }
-
-            if (is_callable($assert)) {
-                return (bool) $assert($this);
-            }
-
-            throw new Exception\InvalidArgumentException(
-                'Assertions must be a Callable or an instance of Zend\Permissions\Rbac\AssertionInterface'
-            );
-        }
-
-        return $this->getRole($role)->hasPermission($permission);
+        return $this->traversalStrategy;
     }
 }
