@@ -1,0 +1,9 @@
+{
+    "title": "Zend\\Permissions.rbac",
+    "target": "html/",
+    "content": [
+        "book/zend.permissions.rbac.intro.md",
+        "book/zend.permissions.rbac.methods.md",
+        "book/zend.permissions.rbac.examples.md"
+    ]
+}
