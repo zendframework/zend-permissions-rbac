@@ -1,6 +1,7 @@
 # Methods
 
-`Zend\Permissions\Rbac\AbstractIterator`  
+## Zend\\Permissions\\Rbac\\AbstractIterator
+
 - current
 - getChildren
 - hasChildren
@@ -9,7 +10,8 @@
 - rewind
 - valid
 
-`Zend\Permissions\Rbac\AbstractRole`  
+## Zend\\Permissions\\Rbac\\AbstractRole
+
 - addChild
 - addPermission
 - getName
@@ -17,10 +19,12 @@
 - setParent
 - getParent
 
-`Zend\Permissions\Rbac\AssertionInterface`  
+## Zend\\Permissions\\Rbac\\AssertionInterface
+
 - assert
 
-`Zend\Permissions\Rbac\Rbac`  
+## Zend\\Permissions\\Rbac\\Rbac
+
 - addRole
 - getCreateMissingRoles
 - getRole
@@ -28,7 +32,8 @@
 - isGranted
 - setCreateMissingRoles
 
-`Zend\Permissions\Rbac\Role`  
+## Zend\\Permissions\\Rbac\\Role
+
 - \_\_construct
 
 
