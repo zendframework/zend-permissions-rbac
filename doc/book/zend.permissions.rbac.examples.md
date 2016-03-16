@@ -7,7 +7,6 @@ The following is a list of common use-case examples for `Zend\Permission\Rbac`.
 Extending and adding roles via instantiation.
 
 ```php
-<?php
 use Zend\Permissions\Rbac\Rbac;
 use Zend\Permissions\Rbac\AbstractRole;
 
@@ -17,7 +16,7 @@ class MyRole extends AbstractRole
 }
 
 // Creating roles manually
-$foo  = new MyRole('foo');
+$foo = new MyRole('foo');
 
 $rbac = new Rbac();
 $rbac->addRole($foo);
@@ -28,7 +27,6 @@ var_dump($rbac->hasRole('foo')); // true
 Adding roles directly to RBAC with the default `Zend\Permission\Rbac\Role`.
 
 ```php
-<?php
 use Zend\Permissions\Rbac\Rbac;
 
 $rbac = new Rbac();
@@ -40,7 +38,6 @@ var_dump($rbac->hasRole('foo')); // true
 Handling roles with children.
 
 ```php
-<?php
 use Zend\Permissions\Rbac\Rbac;
 use Zend\Permissions\Rbac\Role;
 
@@ -54,13 +51,19 @@ $rbac->addRole($foo);
 
 // 2 - Same as one, only via rbac container.
 $rbac->addRole('boo', 'baz'); // baz is a parent of boo
-$rbac->addRole('baz', array('out', 'of', 'roles')); // create several parents of baz
+$rbac->addRole(
+    'baz',
+    [
+        'out',
+        'of',
+        'roles',
+    ]
+); // create several parents of baz
 ```
 
 ## Permissions
 
 ```php
-<?php
 use Zend\Permissions\Rbac\Rbac;
 use Zend\Permissions\Rbac\Role;
 
@@ -84,13 +87,13 @@ Checking permission using `isGranted()` with a class implementing
 `Zend\Permissions\Rbac\AssertionInterface`.
 
 ```php
-<?php
 use Zend\Permissions\Rbac\AssertionInterface;
 use Zend\Permissions\Rbac\Rbac;
 
 class AssertUserIdMatches implements AssertionInterface
 {
     protected $userId;
+
     protected $article;
 
     public function __construct($userId)
@@ -108,6 +111,7 @@ class AssertUserIdMatches implements AssertionInterface
         if (!$this->article) {
             return false;
         }
+
         return $this->userId == $this->article->getUserId();
     }
 }
@@ -148,10 +152,9 @@ if ($rbac->isGranted($user->getRole(), 'edit.article', $assertion)) {
 Performing the same as above with a Closure.
 
 ```php
-<?php
 // assume same variables from previous example
 
-$assertion = function($rbac) use ($user, $news) {
+$assertion = function ($rbac) use ($user, $news) {
     return $user->getId() == $news->getUserId();
 };
 
