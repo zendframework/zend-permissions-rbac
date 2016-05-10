@@ -203,8 +203,7 @@ var_dump($rbac-&gt;hasRole('foo')); // true</code></pre>
 
 
 <p>Handling roles with children:</p>
-<pre class="codehilite"><code class="language-php">&lt;?php
-use Zend\Permissions\Rbac\Rbac;
+<pre class="codehilite"><code class="language-php">use Zend\Permissions\Rbac\Rbac;
 use Zend\Permissions\Rbac\Role;
 
 $rbac = new Rbac();
@@ -303,8 +302,7 @@ if ($rbac-&gt;isGranted($user-&gt;getRole(), 'edit.article', $assertion)) {
 
 
 <p>Performing the same as above with a closure:</p>
-<pre class="codehilite"><code class="language-php">&lt;?php
-// assume same variables from previous example
+<pre class="codehilite"><code class="language-php">// assume same variables from previous example
 
 $assertion = function($rbac) use ($user, $news) {
     return ($user-&gt;getId() === $news-&gt;getUserId());
@@ -379,7 +377,7 @@ if ($rbac-&gt;isGranted($user-&gt;getRole(), 'edit.article', $assertion)) {
     <div class="zf-components">
   <div class="zf-components-grid">
     <div class="zf-logo">
-      <a href="http://framework.zend.com" data-toggle="tooltip" data-placement="bottom" title="Go to the ZF homepage"><img src="../img/zf-logo-mark.png" alt="Zend Framework" width="250" /></a>
+      <a href="http://framework.zend.com" data-toggle="tooltip" data-placement="bottom" title="Go to the ZF homepage"><img src="http://framework.zend.com/images/logos/zf-logo-mark.png" alt="Zend Framework" width="250" /></a>
     </div>
 
     <div class="component-list"></div>
