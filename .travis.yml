@@ -19,7 +19,7 @@ env:
     - GH_USER_NAME: "Matthew Weier O'Phinney"
     - GH_USER_EMAIL: matthew@weierophinney.net
     - GH_REF: github.com/zendframework/zend-permissions-rbac.git
-    - secure: ""
+    - secure: "ELn6js6W0wG3/HlaNJ4ibkLPODT2brDZve6mouEiKnuEvS7dPLQvZYPBr55wWzRG8jGFbTvNXbyMspoufsBuZu5MeSRxkQG0g+Ka/7EXdAJaC/rNJREjMYoFPBS7jzPiEj6M8zi28fEA4rEXQBPkV2XSdXD1dyYFXNXBwcOD+5LEyvFA5A+CNFjfhlf/SDMssJfpmuY+PyyP9r0rIoWwPDrRCQYA3T4vFN6/T6VtrrvSoV32F3Dr7Hjioe57HuTum5UMkVpG8cllx1gQSwqDOE3T1CPejtrgfA6V4UMH1TmNt0GsOCPs+Y0Bjjq30WW5QkFCfk3R27QsJOLKfOr4gsT/oup90x858qrzgmBJio8lOmh4DpaYk3pX96FcP4uS1klyW6m1QkBD+1LkS96BW/pL6gqSu9Xa8nSeC3NRDIzrJf7Yd4YR88xdg0g0UUJ/Z34rdM4kzEeYFuls6zmgnfrmJzOnFU7yWw9CzInMikrx5jQloJUogARr4QsI0MKggw1KNs+ECqAcQbL/wb/EuVUIIB4u0joTn3Ox71x0TZg+MdRIPSWNwuGmJfMZLZ2nIU9To7qHFs1tMgJ/+JRuWrx+UFAelMBoNf0qRqI0XbpTH2R+FM6EiX9aOqPPFt3aYMdfyFzncIGEsoXv5ySECgvoEU41Sszwa23ekgjjxcs="
 
 matrix:
   fast_finish: true
