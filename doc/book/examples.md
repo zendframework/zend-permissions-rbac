@@ -1,13 +1,12 @@
 # Examples
 
-The following is a list of common use-case examples for `Zend\Permission\Rbac`.
+The following is a list of common use-case examples for zend-permission-rbac.
 
 ## Roles
 
-Extending and adding roles via instantiation.
+Extending and adding roles via instantiation:
 
 ```php
-<?php
 use Zend\Permissions\Rbac\Rbac;
 use Zend\Permissions\Rbac\AbstractRole;
 
@@ -25,10 +24,9 @@ $rbac->addRole($foo);
 var_dump($rbac->hasRole('foo')); // true
 ```
 
-Adding roles directly to RBAC with the default `Zend\Permission\Rbac\Role`.
+Adding roles directly to RBAC with the default `Zend\Permission\Rbac\Role`:
 
 ```php
-<?php
 use Zend\Permissions\Rbac\Rbac;
 
 $rbac = new Rbac();
@@ -37,10 +35,9 @@ $rbac->addRole('foo');
 var_dump($rbac->hasRole('foo')); // true
 ```
 
-Handling roles with children.
+Handling roles with children:
 
 ```php
-<?php
 use Zend\Permissions\Rbac\Rbac;
 use Zend\Permissions\Rbac\Role;
 
@@ -54,13 +51,12 @@ $rbac->addRole($foo);
 
 // 2 - Same as one, only via rbac container.
 $rbac->addRole('boo', 'baz'); // baz is a parent of boo
-$rbac->addRole('baz', array('out', 'of', 'roles')); // create several parents of baz
+$rbac->addRole('baz', ['out', 'of', 'roles']); // create several parents of baz
 ```
 
 ## Permissions
 
 ```php
-<?php
 use Zend\Permissions\Rbac\Rbac;
 use Zend\Permissions\Rbac\Role;
 
@@ -81,10 +77,9 @@ $rbac->isGranted('foo', 'baz'); // true
 ## Dynamic Assertions
 
 Checking permission using `isGranted()` with a class implementing
-`Zend\Permissions\Rbac\AssertionInterface`.
+`Zend\Permissions\Rbac\AssertionInterface`:
 
 ```php
-<?php
 use Zend\Permissions\Rbac\AssertionInterface;
 use Zend\Permissions\Rbac\Rbac;
 
@@ -105,10 +100,11 @@ class AssertUserIdMatches implements AssertionInterface
 
     public function assert(Rbac $rbac)
     {
-        if (!$this->article) {
+        if (! $this->article) {
             return false;
         }
-        return $this->userId == $this->article->getUserId();
+
+        return ($this->userId === $this->article->getUserId());
     }
 }
 
@@ -145,14 +141,13 @@ if ($rbac->isGranted($user->getRole(), 'edit.article', $assertion)) {
 }
 ```
 
-Performing the same as above with a Closure.
+Performing the same as above with a closure:
 
 ```php
-<?php
 // assume same variables from previous example
 
 $assertion = function($rbac) use ($user, $news) {
-    return $user->getId() == $news->getUserId();
+    return ($user->getId() === $news->getUserId());
 };
 
 // true
