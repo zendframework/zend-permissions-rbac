@@ -85,7 +85,7 @@ abstract class AbstractRole extends AbstractIterator implements RoleInterface
         if (is_string($child)) {
             $child = new Role($child);
         }
-        if (!$child instanceof RoleInterface) {
+        if (! $child instanceof RoleInterface) {
             throw new Exception\InvalidArgumentException(
                 'Child must be a string or implement Zend\Permissions\Rbac\RoleInterface'
             );
