@@ -46,6 +46,9 @@ class RbacTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $this->rbac->isGranted($foo, 'can.foo', $true));
         $this->assertEquals(false, $this->rbac->isGranted($bar, 'can.bar', $false));
 
+        $this->assertEquals(false, $this->rbac->isGranted($foo, 'cannot', $true));
+        $this->assertEquals(false, $this->rbac->isGranted($bar, 'cannot', $false));
+
         $this->assertEquals(false, $this->rbac->isGranted($bar, 'can.bar', $roleNoMatch));
         $this->assertEquals(false, $this->rbac->isGranted($bar, 'can.foo', $roleNoMatch));
 

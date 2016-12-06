@@ -139,13 +139,15 @@ class Rbac extends AbstractIterator
      */
     public function isGranted($role, $permission, $assert = null)
     {
+        $result = $this->getRole($role)->hasPermission($permission);
+
         if ($assert) {
             if ($assert instanceof AssertionInterface) {
-                return (bool) $assert->assert($this);
+                return $result && $assert->assert($this);
             }
 
             if (is_callable($assert)) {
-                return (bool) $assert($this);
+                return $result && $assert($this);
             }
 
             throw new Exception\InvalidArgumentException(
@@ -153,6 +155,6 @@ class Rbac extends AbstractIterator
             );
         }
 
-        return $this->getRole($role)->hasPermission($permission);
+        return $result;
     }
 }

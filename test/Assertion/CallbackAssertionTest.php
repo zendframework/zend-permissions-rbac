@@ -48,6 +48,7 @@ class CallbackAssertionTest extends \PHPUnit_Framework_TestCase
         });
         $foo  = new Rbac\Role('foo');
         $foo->addPermission('can.foo');
+        $rbac->addRole($foo);
         $this->assertFalse($rbac->isGranted($foo, 'can.foo', $assert));
     }
 
