@@ -118,7 +118,7 @@ abstract class AbstractRole extends AbstractIterator implements RoleInterface
     public function getParent()
     {
         if (1 === count($this->parents)) {
-          return $this->parents[0];
+            return $this->parents[0];
         }
         return $this->parents;
     }
