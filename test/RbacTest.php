@@ -180,4 +180,33 @@ class RbacTest extends TestCase
 
         $this->assertTrue($this->rbac->isGranted('parent', 'test'));
     }
+
+    public function testAddMultipleParentRole()
+    {
+        $adminRole = new Rbac\Role('Administrator');
+        $adminRole->addPermission('user.manage');
+        $this->rbac->addRole($adminRole);
+
+        $managerRole = new Rbac\Role('Manager');
+        $managerRole->addPermission('post.publish');
+        $this->rbac->addRole($managerRole, ['Administrator']);
+
+        $editorRole = new Rbac\Role('Editor');
+        $editorRole->addPermission('post.edit');
+        $this->rbac->addRole($editorRole);
+
+        $viewerRole = new Rbac\Role('Viewer');
+        $viewerRole->addPermission('post.view');
+        $this->rbac->addRole($viewerRole, ['Editor', 'Manager']);
+
+        $this->assertEquals('Viewer', $editorRole->getChildren()->getName());
+        $this->assertEquals('Viewer', $managerRole->getChildren()->getName());
+        $this->assertTrue($this->rbac->isGranted('Editor', 'post.view'));
+        $this->assertTrue($this->rbac->isGranted('Manager', 'post.view'));
+
+        $this->assertEquals($viewerRole->getParent(), [ $editorRole, $managerRole ]);
+        $this->assertEquals($managerRole->getParent(), $adminRole);
+        $this->assertNull($editorRole->getParent());
+        $this->assertNull($adminRole->getParent());
+    }
 }

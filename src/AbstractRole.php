@@ -14,9 +14,9 @@ use RecursiveIteratorIterator;
 abstract class AbstractRole extends AbstractIterator implements RoleInterface
 {
     /**
-     * @var null|RoleInterface
+     * @var null|array
      */
-    protected $parent;
+    protected $parents;
 
     /**
      * @var string
@@ -103,16 +103,23 @@ abstract class AbstractRole extends AbstractIterator implements RoleInterface
      */
     public function setParent($parent)
     {
-        $this->parent = $parent;
-
+        if (null === $this->parents) {
+            $this->parents = [];
+        }
+        if (!in_array($parent, $this->parents)) {
+            $this->parents[] = $parent;
+        }
         return $this;
     }
 
     /**
-     * @return null|RoleInterface
+     * @return null|RoleInterface|array
      */
     public function getParent()
     {
-        return $this->parent;
+        if (1 === count($this->parents)) {
+          return $this->parents[0];
+        }
+        return $this->parents;
     }
 }
