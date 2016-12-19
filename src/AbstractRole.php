@@ -122,4 +122,14 @@ abstract class AbstractRole extends AbstractIterator implements RoleInterface
         }
         return $this->parents;
     }
+
+    /**
+     * @param  RoleInterface $parent
+     * @return RoleInterface
+     */
+    public function addParent($parent)
+    {
+        $parent->addChild($this);
+        return $this->setParent($parent);
+    }
 }
