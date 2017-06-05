@@ -8,9 +8,10 @@
  */
 namespace ZendTest\Permissions\Rbac\Assertion;
 
+use PHPUnit\Framework\TestCase;
 use Zend\Permissions\Rbac;
 
-class CallbackAssertionTest extends \PHPUnit_Framework_TestCase
+class CallbackAssertionTest extends TestCase
 {
     /**
      * Ensures constructor throws InvalidArgumentException if not callable is provided
