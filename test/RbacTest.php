@@ -160,7 +160,7 @@ class RbacTest extends TestCase
      */
     public function testAddCustomChildRole()
     {
-        $role = $this->getMockForAbstractClass('Zend\Permissions\Rbac\RoleInterface');
+        $role = $this->getMockForAbstractClass(Rbac\RoleInterface::class);
         $this->rbac->setCreateMissingRoles(true)->addRole($role, ['parent']);
 
         $role->expects($this->any())
