@@ -136,7 +136,8 @@ class RbacTest extends \PHPUnit_Framework_TestCase
         $this->rbac->addRole($bar, $foo);
 
         $this->assertEquals($bar->getParent(), $foo);
-        $this->assertEquals(1, count($foo->getChildren()));
+        $this->assertEquals($foo->getChildren(), $bar);
+        $this->assertInstanceOf('Zend\Permissions\Rbac\Role', $foo->getChildren());
     }
 
     public function testAddRoleWithAutomaticParentsUsingRbac()
@@ -148,7 +149,8 @@ class RbacTest extends \PHPUnit_Framework_TestCase
         $this->rbac->addRole($bar, $foo);
 
         $this->assertEquals($bar->getParent(), $foo);
-        $this->assertEquals(1, count($foo->getChildren()));
+        $this->assertEquals($foo->getChildren(), $bar);
+        $this->assertInstanceOf('Zend\Permissions\Rbac\Role', $foo->getChildren());
     }
 
     /**
