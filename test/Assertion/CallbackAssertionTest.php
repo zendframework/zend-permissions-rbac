@@ -8,19 +8,18 @@
  */
 namespace ZendTest\Permissions\Rbac\Assertion;
 
+use PHPUnit\Framework\TestCase;
 use Zend\Permissions\Rbac;
 
-class CallbackAssertionTest extends \PHPUnit_Framework_TestCase
+class CallbackAssertionTest extends TestCase
 {
     /**
      * Ensures constructor throws InvalidArgumentException if not callable is provided
      */
     public function testConstructorThrowsExceptionIfNotCallable()
     {
-        $this->setExpectedException(
-            'Zend\Permissions\Rbac\Exception\InvalidArgumentException',
-            'Invalid callback provided; not callable'
-        );
+        $this->expectException(Rbac\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid callback provided; not callable');
         new Rbac\Assertion\CallbackAssertion('I am not callable!');
     }
 
