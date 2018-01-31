@@ -140,11 +140,9 @@ class RbacTest extends TestCase
         $this->rbac->addRole($bar, $foo);
 
         $this->assertEquals($bar->getParent(), $foo);
-        $this->assertTrue($foo->hasChildren());
-        $this->assertEquals($foo->getChildren(), $bar);
-        $this->assertFalse($bar->hasChildren());
-        $this->assertInstanceOf('Zend\Permissions\Rbac\Role', $foo->getChildren());
+        $this->assertEquals($bar, $foo->getChildren());
     }
+
 
     public function testAddRoleWithAutomaticParentsUsingRbac()
     {
@@ -155,10 +153,7 @@ class RbacTest extends TestCase
         $this->rbac->addRole($bar, $foo);
 
         $this->assertEquals($bar->getParent(), $foo);
-        $this->assertTrue($foo->hasChildren());
-        $this->assertEquals($foo->getChildren(), $bar);
-        $this->assertFalse($bar->hasChildren());
-        $this->assertInstanceOf('Zend\Permissions\Rbac\Role', $foo->getChildren());
+        $this->assertEquals($bar, $foo->getChildren());
     }
 
     /**
@@ -240,5 +235,32 @@ class RbacTest extends TestCase
         $this->assertEquals($managerRole->getParent(), $adminRole);
         $this->assertNull($editorRole->getParent());
         $this->assertNull($adminRole->getParent());
+    }
+
+    public function testAddTwoChildRole()
+    {
+        $foo = new Rbac\Role('foo');
+        $bar = new Rbac\Role('bar');
+        $baz = new Rbac\Role('baz');
+
+        $foo->addChild($bar);
+        $foo->addChild($baz);
+
+        $this->assertEquals($foo, $bar->getParent());
+        $this->assertEquals($bar, $foo->getChildren());
+        $foo->next();
+        $this->assertEquals($foo, $baz->getParent());
+        $this->assertEquals($baz, $foo->getChildren());
+    }
+
+    public function testAddSameParent()
+    {
+        $foo = new Rbac\Role('foo');
+        $bar = new Rbac\Role('bar');
+
+        $foo->addParent($bar);
+        $foo->addParent($bar);
+
+        $this->assertEquals($bar, $foo->getParent());
     }
 }
