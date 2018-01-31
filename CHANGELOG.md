@@ -6,6 +6,11 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
+- [#23](https://github.com/zendframework/zend-permissions-rbac/pull/23) adds
+  support for multiple parent roles, fixing an issue with reverse traversal of
+  the inheritance tree. To accomplish this, the method `addParent($parent)` was
+  added, and the method `getParent()` now can also return an array of roles.
+
 - [#31](https://github.com/zendframework/zend-permissions-rbac/pull/31) adds
   support for PHP 7.2.
 
@@ -15,7 +20,8 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Deprecated
 
-- Nothing.
+- [#23](https://github.com/zendframework/zend-permissions-rbac/pull/23)
+  deprecates the method `setParent()`. Use `addParent()` instead.
 
 ### Removed
 
