@@ -27,7 +27,7 @@ Method signature                               | Description
 `getName() : string`                           | Retrieve the name assigned to this role.
 `hasPermission(string $name) : bool`           | Does the role have the given permission?
 `setParent(RoleInterface $parent) : void`      | Assign the provided role as the current role's parent.
-`getParent() null|RoleInterface`               | Retrive the current role's parent, if one exists.
+`getParent() null|RoleInterface`               | Retrieve the current role's parent, if one exists.
 
 ## `Zend\Permissions\Rbac\AssertionInterface`
 
