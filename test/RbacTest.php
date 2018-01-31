@@ -9,12 +9,13 @@
 
 namespace ZendTest\Permissions\Rbac;
 
+use PHPUnit\Framework\TestCase;
 use Zend\Permissions\Rbac;
 
 /**
  * @group      Zend_Rbac
  */
-class RbacTest extends \PHPUnit_Framework_TestCase
+class RbacTest extends TestCase
 {
     /**
      * @var \Zend\Permissions\Rbac\Rbac
@@ -159,7 +160,7 @@ class RbacTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddCustomChildRole()
     {
-        $role = $this->getMockForAbstractClass('Zend\Permissions\Rbac\RoleInterface');
+        $role = $this->getMockForAbstractClass(Rbac\RoleInterface::class);
         $this->rbac->setCreateMissingRoles(true)->addRole($role, ['parent']);
 
         $role->expects($this->any())
