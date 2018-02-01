@@ -2,9 +2,12 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.6.0 - TBD
+## 2.6.0 - 2018-02-01
 
 ### Added
+
+- [#12](https://github.com/zendframework/zend-permissions-rbac/pull/12) adds
+  and publishes the documentation to https://zendframework.github.io/zend-permissions-rbac/
 
 - [#23](https://github.com/zendframework/zend-permissions-rbac/pull/23) adds
   support for multiple parent roles, fixing an issue with reverse traversal of
@@ -33,23 +36,5 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
-
-## 2.5.2 - TBD
-
-### Added
-
-- [#12](https://github.com/zendframework/zend-permissions-rbac/pull/12) adds
-  and publishes the documentation to https://zendframework.github.io/zend-permissions-rbac/
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
+- [#21](https://github.com/zendframework/zend-permissions-rbac/pull/21) fixes
+  dynamic assertion checking, adding the AND with permission.
