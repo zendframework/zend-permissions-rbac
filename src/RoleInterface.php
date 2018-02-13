@@ -16,7 +16,7 @@ interface RoleInterface
      *
      * @return string
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * Add permission to the role.
@@ -24,7 +24,7 @@ interface RoleInterface
      * @param $name
      * @return RoleInterface
      */
-    public function addPermission($name);
+    public function addPermission(string $name): RoleInterface;
 
     /**
      * Checks if a permission exists for this role or any child roles.
@@ -32,7 +32,7 @@ interface RoleInterface
      * @param  string $name
      * @return bool
      */
-    public function hasPermission($name);
+    public function hasPermission(string $name): bool;
 
     /**
      * Add a child.
@@ -40,14 +40,14 @@ interface RoleInterface
      * @param  RoleInterface $child
      * @return RoleInterface
      */
-    public function addChild(RoleInterface $child);
+    public function addChild(RoleInterface $child): RoleInterface;
 
     /**
      * Get the children roles.
      *
      * @return RoleInterface[]
      */
-    public function getChildren();
+    public function getChildren(): array;
 
     /**
      * Add a parent.
@@ -55,12 +55,12 @@ interface RoleInterface
      * @param RoleInterface $parent
      * @return RoleInterface
      */
-    public function addParent(RoleInterface $parent);
+    public function addParent(RoleInterface $parent): RoleInterface;
 
     /**
      * Get the parent roles.
      *
      * @return RoleInterface[]
      */
-    public function getParents();
+    public function getParents(): array;
 }

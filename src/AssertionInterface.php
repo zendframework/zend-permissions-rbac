@@ -19,5 +19,5 @@ interface AssertionInterface
      * @param  RoleInterface $role
      * @return bool
      */
-    public function assert(Rbac $rbac, $permission = null, $role = null);
+    public function assert(Rbac $rbac, string $permission = null, RoleInterface $role = null);
 }

@@ -44,7 +44,7 @@ class Role implements RoleInterface
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -55,13 +55,8 @@ class Role implements RoleInterface
      * @param $name
      * @return RoleInterface
      */
-    public function addPermission($name)
+    public function addPermission(string $name): RoleInterface
     {
-        if (! is_string($name)) {
-            throw new Exception\InvalidArgumentException(
-                'The permission name must be a string'
-            );
-        }
         $this->permissions[$name] = true;
         return $this;
     }
@@ -72,7 +67,7 @@ class Role implements RoleInterface
      * @param  string $name
      * @return bool
      */
-    public function hasPermission($name)
+    public function hasPermission(string $name): bool
     {
         if (isset($this->permissions[$name])) {
             return true;
@@ -91,7 +86,7 @@ class Role implements RoleInterface
      * @param  RoleInterface $child
      * @return RoleInterface
      */
-    public function addChild(RoleInterface $child)
+    public function addChild(RoleInterface $child): RoleInterface
     {
         if (! $child instanceof RoleInterface) {
             throw new Exception\InvalidArgumentException(
@@ -118,7 +113,7 @@ class Role implements RoleInterface
      * @param RoleInterface $role
      * @return bool
      */
-    protected function hasAncestor(RoleInterface $role)
+    protected function hasAncestor(RoleInterface $role): bool
     {
         if (isset($this->parents[$role->getName()])) {
             return true;
@@ -136,7 +131,7 @@ class Role implements RoleInterface
      *
      * @return RoleInterface[]
      */
-    public function getChildren()
+    public function getChildren(): array
     {
         return array_values($this->children);
     }
@@ -147,7 +142,7 @@ class Role implements RoleInterface
      * @param  RoleInterface $parent
      * @return RoleInterface
      */
-    public function addParent(RoleInterface $parent)
+    public function addParent(RoleInterface $parent): RoleInterface
     {
         if (! $parent instanceof RoleInterface) {
             throw new Exception\InvalidArgumentException(
@@ -174,7 +169,7 @@ class Role implements RoleInterface
      * @param RoleInterface $role
      * @return bool
      */
-    protected function hasDescendant(RoleInterface $role)
+    protected function hasDescendant(RoleInterface $role): bool
     {
         if (isset($this->children[$role->getName()])) {
             return true;
@@ -192,7 +187,7 @@ class Role implements RoleInterface
      *
      * @return RoleInterface[]
      */
-    public function getParents()
+    public function getParents(): array
     {
         return array_values($this->parents);
     }

@@ -41,7 +41,7 @@ class RoleTest extends TestCase
     {
         $perm = new \stdClass();
         $foo = new Role('foo');
-        $this->expectException(Exception\InvalidArgumentException::class);
+        $this->expectException(\TypeError::class);
         $foo->addPermission($perm);
     }
 

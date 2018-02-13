@@ -28,17 +28,16 @@ class Rbac
      * @param  bool $createMissingRoles
      * @return \Zend\Permissions\Rbac\Rbac
      */
-    public function setCreateMissingRoles($createMissingRoles)
+    public function setCreateMissingRoles(bool $createMissingRoles): Rbac
     {
         $this->createMissingRoles = $createMissingRoles;
-
         return $this;
     }
 
     /**
      * @return bool
      */
-    public function getCreateMissingRoles()
+    public function getCreateMissingRoles(): bool
     {
         return $this->createMissingRoles;
     }
@@ -51,7 +50,7 @@ class Rbac
      * @return self
      * @throws Exception\InvalidArgumentException
      */
-    public function addRole($role, $parents = null)
+    public function addRole($role, $parents = null): Rbac
     {
         if (is_string($role)) {
             $role = new Role($role);
@@ -86,7 +85,7 @@ class Rbac
      * @param  RoleInterface|string $role
      * @return bool
      */
-    public function hasRole($role)
+    public function hasRole($role): bool
     {
         if (! is_string($role) && ! $role instanceof RoleInterface) {
             throw new Exception\InvalidArgumentException(
@@ -108,7 +107,7 @@ class Rbac
      * @return RoleInterface
      * @throws Exception\InvalidArgumentException
      */
-    public function getRole($roleName)
+    public function getRole(string $roleName): RoleInterface
     {
         if (! is_string($roleName)) {
             throw new Exception\InvalidArgumentException(
@@ -133,7 +132,7 @@ class Rbac
      * @throws Exception\InvalidArgumentException
      * @return bool
      */
-    public function isGranted($role, $permission, $assert = null)
+    public function isGranted($role, string $permission, $assert = null): bool
     {
         if (! $this->hasRole($role)) {
             throw new Exception\InvalidArgumentException(sprintf(
