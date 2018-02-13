@@ -39,6 +39,7 @@ All notable changes to this project will be documented in this file, in reverse 
   circular references with the protected functions `Role::hasAncestor($role)`
   used in `Role::addChild()` and `Role::hasDescendant($role)` in `Role::addParent()`.
 
+
 ## 2.6.0 - 2018-02-01
 
 ### Added
