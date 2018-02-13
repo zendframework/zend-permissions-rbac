@@ -3,15 +3,13 @@
  * Zend Framework (http://framework.zend.com/)
  *
  * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2005-2018 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
 namespace Zend\Permissions\Rbac;
 
-use RecursiveIterator;
-
-interface RoleInterface extends RecursiveIterator
+interface RoleInterface
 {
     /**
      * Get the name of the role.
@@ -39,19 +37,30 @@ interface RoleInterface extends RecursiveIterator
     /**
      * Add a child.
      *
-     * @param  RoleInterface|string $child
-     * @return Role
-     */
-    public function addChild($child);
-
-    /**
-     * @param  RoleInterface $parent
+     * @param  RoleInterface $child
      * @return RoleInterface
      */
-    public function setParent($parent);
+    public function addChild(RoleInterface $child);
 
     /**
-     * @return null|RoleInterface|array
+     * Get the children roles.
+     *
+     * @return RoleInterface[]
      */
-    public function getParent();
+    public function getChildrens();
+
+    /**
+     * Add a parent.
+     *
+     * @param RoleInterface $parent
+     * @return RoleInterface
+     */
+    public function addParent(RoleInterface $parent);
+
+    /**
+     * Get the parent roles.
+     *
+     * @return RoleInterface[]
+     */
+    public function getParents();
 }

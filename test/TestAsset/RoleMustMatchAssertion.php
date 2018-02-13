@@ -3,7 +3,7 @@
  * Zend Framework (http://framework.zend.com/)
  *
  * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2005-2018 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
@@ -13,29 +13,13 @@ use Zend\Permissions\Rbac\AbstractRole;
 use Zend\Permissions\Rbac\AssertionInterface;
 use Zend\Permissions\Rbac\Rbac;
 
-/**
- * @group      Zend_Rbac
- */
 class RoleMustMatchAssertion implements AssertionInterface
 {
     /**
-     * @var AbstractRole
+     * {@inheritDoc}
      */
-    protected $role;
-
-    public function __construct(AbstractRole $role)
+    public function assert(Rbac $rbac, $permission = null, $role = null)
     {
-        $this->role = $role;
-    }
-
-    /**
-     * Assertion method - must return a boolean.
-     *
-     * @param  Rbac    $rbac
-     * @return bool
-     */
-    public function assert(Rbac $rbac)
-    {
-        return $this->role->getName() == 'foo';
+        return $role->getName() === 'foo';
     }
 }

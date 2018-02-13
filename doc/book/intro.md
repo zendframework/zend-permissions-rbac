@@ -1,8 +1,7 @@
 # Introduction
 
-zend-permissions-rbac provides a lightweight role-based access control (RBAC)
-implementation based around PHP's `RecursiveIterator` and
-`RecursiveIteratorIterator`. RBAC differs from access control lists (ACL) by
+`zend-permissions-rbac` provides a lightweight [Role-based access control](https://it.wikipedia.org/wiki/Role-based_access_control)
+(RBAC) implementation in PHP. RBAC differs from access control lists (ACL) by
 putting the emphasis on roles and their permissions rather than objects
 (resources).
 
@@ -16,7 +15,7 @@ Thus, RBAC has the following model:
 
 - many to many relationship between **identities** and **roles**.
 - many to many relationship between **roles** and **permissions**.
-- **roles** can have a parent role.
+- **roles** can have parent and children roles (hierarchy of roles).
 
 ## Roles
 
