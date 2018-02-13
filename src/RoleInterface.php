@@ -47,7 +47,7 @@ interface RoleInterface
      *
      * @return RoleInterface[]
      */
-    public function getChildrens();
+    public function getChildren();
 
     /**
      * Add a parent.

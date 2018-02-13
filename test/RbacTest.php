@@ -153,7 +153,7 @@ class RbacTest extends TestCase
         $this->rbac->addRole($bar, $foo);
 
         $this->assertEquals($bar->getParents(), [$foo]);
-        $this->assertEquals([$bar], $foo->getChildrens());
+        $this->assertEquals([$bar], $foo->getChildren());
     }
 
 
@@ -167,7 +167,7 @@ class RbacTest extends TestCase
         $this->rbac->addRole($bar, $foo);
 
         $this->assertEquals($bar->getParents(), [$foo]);
-        $this->assertEquals([$bar], $foo->getChildrens());
+        $this->assertEquals([$bar], $foo->getChildren());
     }
 
     /**
@@ -208,8 +208,8 @@ class RbacTest extends TestCase
         $viewerRole->addPermission('post.view');
         $this->rbac->addRole($viewerRole, ['Editor', 'Manager']);
 
-        $this->assertEquals('Viewer', $editorRole->getChildrens()[0]->getName());
-        $this->assertEquals('Viewer', $managerRole->getChildrens()[0]->getName());
+        $this->assertEquals('Viewer', $editorRole->getChildren()[0]->getName());
+        $this->assertEquals('Viewer', $managerRole->getChildren()[0]->getName());
         $this->assertTrue($this->rbac->isGranted('Editor', 'post.view'));
         $this->assertTrue($this->rbac->isGranted('Manager', 'post.view'));
 
@@ -241,8 +241,8 @@ class RbacTest extends TestCase
         $this->rbac->addRole($viewerRole);
 
         // Check roles hierarchy
-        $this->assertEquals([$viewerRole], $editorRole->getChildrens());
-        $this->assertEquals([$viewerRole], $managerRole->getChildrens());
+        $this->assertEquals([$viewerRole], $editorRole->getChildren());
+        $this->assertEquals([$viewerRole], $managerRole->getChildren());
         $this->assertEquals($viewerRole->getParents(), [$editorRole, $managerRole]);
         $this->assertEquals($managerRole->getParents(), [$adminRole]);
         $this->assertEmpty($editorRole->getParents());
@@ -275,7 +275,7 @@ class RbacTest extends TestCase
         $foo->addChild($baz);
 
         $this->assertEquals([$foo], $bar->getParents());
-        $this->assertEquals([$bar, $baz], $foo->getChildrens());
+        $this->assertEquals([$bar, $baz], $foo->getChildren());
     }
 
     public function testAddSameParent()

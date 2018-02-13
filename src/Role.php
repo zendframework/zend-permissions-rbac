@@ -14,7 +14,7 @@ class Role implements RoleInterface
     /**
      * @var RoleInterface[]
      */
-    protected $childrens = [];
+    protected $children = [];
 
     /**
      * @var RoleInterface[]
@@ -77,7 +77,7 @@ class Role implements RoleInterface
         if (isset($this->permissions[$name])) {
             return true;
         }
-        foreach ($this->childrens as $child) {
+        foreach ($this->children as $child) {
             if ($child->hasPermission($name)) {
                 return true;
             }
@@ -105,8 +105,8 @@ class Role implements RoleInterface
                 $childName
             ));
         }
-        if (! isset($this->childrens[$childName])) {
-            $this->childrens[$childName] = $child;
+        if (! isset($this->children[$childName])) {
+            $this->children[$childName] = $child;
             $child->addParent($this);
         }
         return $this;
@@ -136,9 +136,9 @@ class Role implements RoleInterface
      *
      * @return RoleInterface[]
      */
-    public function getChildrens()
+    public function getChildren()
     {
-        return array_values($this->childrens);
+        return array_values($this->children);
     }
 
     /**
@@ -176,10 +176,10 @@ class Role implements RoleInterface
      */
     protected function hasDescendant(RoleInterface $role)
     {
-        if (isset($this->childrens[$role->getName()])) {
+        if (isset($this->children[$role->getName()])) {
             return true;
         }
-        foreach ($this->childrens as $child) {
+        foreach ($this->children as $child) {
             if ($child->hasDescendant($role)) {
                 return true;
             }

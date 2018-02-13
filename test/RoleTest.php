@@ -53,7 +53,7 @@ class RoleTest extends TestCase
 
         $this->assertInstanceOf(RoleInterface::class, $foo->addChild($bar));
         $this->assertInstanceOf(RoleInterface::class, $foo->addChild($baz));
-        $this->assertEquals($foo->getChildrens(), [$bar, $baz]);
+        $this->assertEquals($foo->getChildren(), [$bar, $baz]);
     }
 
     public function testAddParent()

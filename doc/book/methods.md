@@ -11,7 +11,7 @@ Method signature                          | Description
 `addPermission(string $name) : void`      | Add a permission for the current role.
 `hasPermission(string $name) : bool`      | Does the role have the given permission?
 `addChild(RoleInterface $child) : Role`   | Add a child role to the current instance.
-`getChildrens() : RoleInterface[]`        | Get all the children roles.
+`getChildren() : RoleInterface[]`         | Get all the children roles.
 `addParent(RoleInterface $parent) : Role` | Add a parent role to the current instance.
 `getParents() : RoleInterface[]`          | Get all the parent roles.
 
