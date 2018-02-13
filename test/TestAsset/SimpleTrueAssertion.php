@@ -11,13 +11,14 @@ namespace ZendTest\Permissions\Rbac\TestAsset;
 
 use Zend\Permissions\Rbac\AssertionInterface;
 use Zend\Permissions\Rbac\Rbac;
+use Zend\Permissions\Rbac\RoleInterface;
 
 class SimpleTrueAssertion implements AssertionInterface
 {
     /**
      * {@inheritDoc}
      */
-    public function assert(Rbac $rbac, $permission = null, $role = null)
+    public function assert(Rbac $rbac, string $permission = null, RoleInterface $role = null)
     {
         return true;
     }

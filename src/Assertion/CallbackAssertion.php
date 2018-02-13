@@ -11,6 +11,7 @@ namespace Zend\Permissions\Rbac\Assertion;
 use Zend\Permissions\Rbac\AssertionInterface;
 use Zend\Permissions\Rbac\Exception\InvalidArgumentException;
 use Zend\Permissions\Rbac\Rbac;
+use Zend\Permissions\Rbac\RoleInterface;
 
 class CallbackAssertion implements AssertionInterface
 {
@@ -33,7 +34,7 @@ class CallbackAssertion implements AssertionInterface
     /**
      * {@inheritDoc}
      */
-    public function assert(Rbac $rbac, $permission = null, $role = null)
+    public function assert(Rbac $rbac, string $permission = null, RoleInterface $role = null)
     {
         return (bool) call_user_func($this->callback, $rbac);
     }
