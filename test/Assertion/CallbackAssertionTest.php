@@ -94,4 +94,16 @@ class CallbackAssertionTest extends TestCase
         $this->assertTrue($rbac->isGranted('foo', 'can.foo', $callable));
         $this->assertFalse($rbac->isGranted('foo', 'can.bar', $callable));
     }
+
+    public function testAssertWithInvalidValue()
+    {
+        $rbac = new Rbac\Rbac();
+        $foo  = new Rbac\Role('foo');
+        $foo->addPermission('can.foo');
+        $rbac->addRole($foo);
+
+        $callable = new \stdClass();
+        $this->expectException(Rbac\Exception\InvalidArgumentException::class);
+        $rbac->isGranted('foo', 'can.foo', $callable);
+    }
 }
