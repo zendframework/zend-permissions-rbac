@@ -1,11 +1,11 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
+ * @see       https://github.com/zendframework/zend-permissions-rbac for the canonical source repository
  * @copyright Copyright (c) 2005-2018 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @license   https://github.com/zendframework/zend-permissions-rbac/blob/master/LICENSE.md New BSD License
  */
+
+declare(strict_types=1);
 
 namespace Zend\Permissions\Rbac;
 
@@ -53,12 +53,11 @@ class Role implements RoleInterface
      * Add permission to the role.
      *
      * @param $name
-     * @return RoleInterface
+     * @return void
      */
-    public function addPermission(string $name): RoleInterface
+    public function addPermission(string $name): void
     {
         $this->permissions[$name] = true;
-        return $this;
     }
 
     /**
@@ -84,15 +83,11 @@ class Role implements RoleInterface
      * Add a child
      *
      * @param  RoleInterface $child
-     * @return RoleInterface
+     * @return void
+     * @throws Exception\RuntimeException
      */
-    public function addChild(RoleInterface $child): RoleInterface
+    public function addChild(RoleInterface $child): void
     {
-        if (! $child instanceof RoleInterface) {
-            throw new Exception\InvalidArgumentException(
-                'Child must implement Zend\Permissions\Rbac\RoleInterface'
-            );
-        }
         $childName = $child->getName();
         if ($this->hasAncestor($child)) {
             throw new Exception\RuntimeException(sprintf(
@@ -104,7 +99,6 @@ class Role implements RoleInterface
             $this->children[$childName] = $child;
             $child->addParent($this);
         }
-        return $this;
     }
 
     /**
@@ -140,15 +134,11 @@ class Role implements RoleInterface
      * Add a parent role
      *
      * @param  RoleInterface $parent
-     * @return RoleInterface
+     * @return void
+     * @throws Exception\RuntimeException
      */
-    public function addParent(RoleInterface $parent): RoleInterface
+    public function addParent(RoleInterface $parent): void
     {
-        if (! $parent instanceof RoleInterface) {
-            throw new Exception\InvalidArgumentException(
-                'Parent must implement Zend\Permissions\Rbac\RoleInterface'
-            );
-        }
         $parentName = $parent->getName();
         if ($this->hasDescendant($parent)) {
             throw new Exception\RuntimeException(sprintf(
@@ -160,7 +150,6 @@ class Role implements RoleInterface
             $this->parents[$parentName] = $parent;
             $parent->addChild($this);
         }
-        return $this;
     }
 
     /**

@@ -1,11 +1,12 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
+ * @see       https://github.com/zendframework/zend-permissions-rbac for the canonical source repository
  * @copyright Copyright (c) 2005-2018 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @license   https://github.com/zendframework/zend-permissions-rbac/blob/master/LICENSE.md New BSD License
  */
+
+declare(strict_types=1);
+
 namespace ZendTest\Permissions\Rbac\Assertion;
 
 use PHPUnit\Framework\TestCase;
@@ -78,5 +79,19 @@ class CallbackAssertionTest extends TestCase
         $this->assertFalse($rbac->isGranted($bar, 'can.bar', $roleNoMatch));
         $this->assertFalse($rbac->isGranted($bar, 'can.foo', $roleNoMatch));
         $this->assertTrue($rbac->isGranted($foo, 'can.foo', $roleMatch));
+    }
+
+    public function testAssertWithCallable()
+    {
+        $rbac = new Rbac\Rbac();
+        $foo  = new Rbac\Role('foo');
+        $foo->addPermission('can.foo');
+        $rbac->addRole($foo);
+
+        $callable = function ($rbac, $permission, $role) {
+            return true;
+        };
+        $this->assertTrue($rbac->isGranted('foo', 'can.foo', $callable));
+        $this->assertFalse($rbac->isGranted('foo', 'can.bar', $callable));
     }
 }

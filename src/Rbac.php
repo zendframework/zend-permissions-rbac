@@ -1,11 +1,11 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
+ * @see       https://github.com/zendframework/zend-permissions-rbac for the canonical source repository
  * @copyright Copyright (c) 2005-2018 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @license   https://github.com/zendframework/zend-permissions-rbac/blob/master/LICENSE.md New BSD License
  */
+
+declare(strict_types=1);
 
 namespace Zend\Permissions\Rbac;
 
@@ -26,12 +26,11 @@ class Rbac
 
     /**
      * @param  bool $createMissingRoles
-     * @return \Zend\Permissions\Rbac\Rbac
+     * @return void
      */
-    public function setCreateMissingRoles(bool $createMissingRoles): Rbac
+    public function setCreateMissingRoles(bool $createMissingRoles): void
     {
         $this->createMissingRoles = $createMissingRoles;
-        return $this;
     }
 
     /**
@@ -47,10 +46,10 @@ class Rbac
      *
      * @param  string|RoleInterface               $child
      * @param  array|RoleInterface|null           $parents
-     * @return self
+     * @return void
      * @throws Exception\InvalidArgumentException
      */
-    public function addRole($role, $parents = null): Rbac
+    public function addRole($role, $parents = null): void
     {
         if (is_string($role)) {
             $role = new Role($role);
@@ -76,7 +75,6 @@ class Rbac
             }
         }
         $this->roles[$role->getName()] = $role;
-        return $this;
     }
 
     /**
@@ -109,11 +107,6 @@ class Rbac
      */
     public function getRole(string $roleName): RoleInterface
     {
-        if (! is_string($roleName)) {
-            throw new Exception\InvalidArgumentException(
-                'Role name must be a string'
-            );
-        }
         if (! isset($this->roles[$roleName])) {
             throw new Exception\InvalidArgumentException(sprintf(
                 'No role with name "%s" could be found',
@@ -129,8 +122,8 @@ class Rbac
      * @param  RoleInterface|string             $role
      * @param  string                           $permission
      * @param  AssertionInterface|Callable|null $assert
-     * @throws Exception\InvalidArgumentException
      * @return bool
+     * @throws Exception\InvalidArgumentException
      */
     public function isGranted($role, string $permission, $assert = null): bool
     {

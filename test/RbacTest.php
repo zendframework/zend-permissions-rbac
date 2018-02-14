@@ -1,11 +1,11 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
+ * @see       https://github.com/zendframework/zend-permissions-rbac for the canonical source repository
  * @copyright Copyright (c) 2005-2018 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @license   https://github.com/zendframework/zend-permissions-rbac/blob/master/LICENSE.md New BSD License
  */
+
+declare(strict_types=1);
 
 namespace ZendTest\Permissions\Rbac;
 
@@ -84,6 +84,12 @@ class RbacTest extends TestCase
         $this->assertEquals(false, $this->rbac->isGranted('bar', 'can.baz'));
     }
 
+    public function testIsGrantedWithInvalidRole()
+    {
+        $this->expectException(Exception\InvalidArgumentException::class);
+        $this->rbac->isGranted('foo', 'permission');
+    }
+
     public function testGetRole()
     {
         $foo = new Rbac\Role('foo');
@@ -116,6 +122,19 @@ class RbacTest extends TestCase
         $this->assertNotEquals($this->rbac->getRole('snafu'), $snafu);
         $this->assertTrue($this->rbac->hasRole('snafu'));
         $this->assertFalse($this->rbac->hasRole($snafu));
+    }
+
+    public function testHasRoleWithInvalidElement()
+    {
+        $role = new \stdClass();
+        $this->expectException(Exception\InvalidArgumentException::class);
+        $this->rbac->hasRole($role);
+    }
+
+    public function testGetUndefinedRole()
+    {
+        $this->expectException(Exception\InvalidArgumentException::class);
+        $this->rbac->getRole('foo');
     }
 
     public function testAddRoleFromString()
@@ -176,7 +195,8 @@ class RbacTest extends TestCase
     public function testAddCustomChildRole()
     {
         $role = $this->getMockForAbstractClass(Rbac\RoleInterface::class);
-        $this->rbac->setCreateMissingRoles(true)->addRole($role, ['parent']);
+        $this->rbac->setCreateMissingRoles(true);
+        $this->rbac->addRole($role, 'parent');
 
         $role->expects($this->any())
             ->method('getName')

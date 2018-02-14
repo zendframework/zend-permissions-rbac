@@ -80,6 +80,7 @@ Checking permission using `isGranted()` with a class implementing
 `Zend\Permissions\Rbac\AssertionInterface`:
 
 ```php
+use App\Model\Article;
 use Zend\Permissions\Rbac\AssertionInterface;
 use Zend\Permissions\Rbac\Rbac;
 
@@ -88,22 +89,21 @@ class AssertUserRoleMatches implements AssertionInterface
     protected $userId;
     protected $article;
 
-    public function __construct($userId)
+    public function __construct(string $userId)
     {
         $this->userId = $userId;
     }
 
-    public function setArticle($article)
+    public function setArticle(Article $article)
     {
         $this->article = $article;
     }
 
-    public function assert(Rbac $rbac, $permission = null, $role = null)
+    public function assert(Rbac $rbac, string $permission = null, RoleInterface $role = null)
     {
         if (! $this->article) {
             return false;
         }
-
         return ($this->userId === $this->article->getUserId());
     }
 }

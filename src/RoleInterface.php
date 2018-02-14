@@ -1,11 +1,11 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
+ * @see       https://github.com/zendframework/zend-permissions-rbac for the canonical source repository
  * @copyright Copyright (c) 2005-2018 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @license   https://github.com/zendframework/zend-permissions-rbac/blob/master/LICENSE.md New BSD License
  */
+
+declare(strict_types=1);
 
 namespace Zend\Permissions\Rbac;
 
@@ -22,9 +22,9 @@ interface RoleInterface
      * Add permission to the role.
      *
      * @param $name
-     * @return RoleInterface
+     * @return void
      */
-    public function addPermission(string $name): RoleInterface;
+    public function addPermission(string $name): void;
 
     /**
      * Checks if a permission exists for this role or any child roles.
@@ -38,9 +38,9 @@ interface RoleInterface
      * Add a child.
      *
      * @param  RoleInterface $child
-     * @return RoleInterface
+     * @return void
      */
-    public function addChild(RoleInterface $child): RoleInterface;
+    public function addChild(RoleInterface $child): void;
 
     /**
      * Get the children roles.
@@ -53,9 +53,9 @@ interface RoleInterface
      * Add a parent.
      *
      * @param RoleInterface $parent
-     * @return RoleInterface
+     * @return void
      */
-    public function addParent(RoleInterface $parent): RoleInterface;
+    public function addParent(RoleInterface $parent): void;
 
     /**
      * Get the parent roles.
