@@ -28,7 +28,7 @@ class Rbac
      * @param  bool $createMissingRoles
      * @return void
      */
-    public function setCreateMissingRoles(bool $createMissingRoles): void
+    public function setCreateMissingRoles(bool $createMissingRoles) : void
     {
         $this->createMissingRoles = $createMissingRoles;
     }
@@ -36,7 +36,7 @@ class Rbac
     /**
      * @return bool
      */
-    public function getCreateMissingRoles(): bool
+    public function getCreateMissingRoles() : bool
     {
         return $this->createMissingRoles;
     }
@@ -49,7 +49,7 @@ class Rbac
      * @return void
      * @throws Exception\InvalidArgumentException
      */
-    public function addRole($role, $parents = null): void
+    public function addRole($role, $parents = null) : void
     {
         if (is_string($role)) {
             $role = new Role($role);
@@ -83,7 +83,7 @@ class Rbac
      * @param  RoleInterface|string $role
      * @return bool
      */
-    public function hasRole($role): bool
+    public function hasRole($role) : bool
     {
         if (! is_string($role) && ! $role instanceof RoleInterface) {
             throw new Exception\InvalidArgumentException(
@@ -94,8 +94,8 @@ class Rbac
             return isset($this->roles[$role]);
         }
         $roleName = $role->getName();
-        return isset($this->roles[$roleName]) &&
-               $this->roles[$roleName] === $role;
+        return isset($this->roles[$roleName])
+            && $this->roles[$roleName] === $role;
     }
 
     /**
@@ -105,7 +105,7 @@ class Rbac
      * @return RoleInterface
      * @throws Exception\InvalidArgumentException
      */
-    public function getRole(string $roleName): RoleInterface
+    public function getRole(string $roleName) : RoleInterface
     {
         if (! isset($this->roles[$roleName])) {
             throw new Exception\InvalidArgumentException(sprintf(
@@ -125,7 +125,7 @@ class Rbac
      * @return bool
      * @throws Exception\InvalidArgumentException
      */
-    public function isGranted($role, string $permission, $assert = null): bool
+    public function isGranted($role, string $permission, $assert = null) : bool
     {
         if (! $this->hasRole($role)) {
             throw new Exception\InvalidArgumentException(sprintf(
@@ -141,10 +141,10 @@ class Rbac
             return $result;
         }
         if ($assert instanceof AssertionInterface) {
-            return $result && $assert->assert($this, $permission, $role);
+            return $result && $assert->assert($this, $role, $permission);
         }
         if (is_callable($assert)) {
-            return $result && $assert($this, $permission, $role);
+            return $result && $assert($this, $role, $permission);
         }
         throw new Exception\InvalidArgumentException(
             'Assertions must be a Callable or an instance of Zend\Permissions\Rbac\AssertionInterface'

@@ -22,7 +22,7 @@ assertions are provided the `Rbac` instance on invocation.
 
 Method signature                                                            | Description
 --------------------------------------------------------------------------- | -----------
-`assert(Rbac $rbac, string $permission = null, RoleInterface $role = null)` | Given an RBAC, an optional permission, and optional role determine if permission is granted.
+`assert(Rbac $rbac, RoleInterface $role = null, string $permission = null)` | Given an RBAC, an optional permission, and optional role determine if permission is granted.
 
 ## `Zend\Permissions\Rbac\Rbac`
 

@@ -16,7 +16,7 @@ use Zend\Permissions\Rbac\RoleInterface;
 
 class RoleMustMatchAssertion implements AssertionInterface
 {
-    public function assert(Rbac $rbac, string $permission = null, RoleInterface $role = null): bool
+    public function assert(Rbac $rbac, RoleInterface $role = null, string $permission = null) : bool
     {
         return $role->getName() === 'foo';
     }

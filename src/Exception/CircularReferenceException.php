@@ -7,12 +7,9 @@
 
 declare(strict_types=1);
 
-namespace Zend\Permissions\Rbac;
+namespace Zend\Permissions\Rbac\Exception;
 
-interface AssertionInterface
+class CircularReferenceException extends \RuntimeException implements
+    ExceptionInterface
 {
-    /**
-     * Assertion method - must return a boolean.
-     */
-    public function assert(Rbac $rbac, RoleInterface $role = null, string $permission = null) : bool;
 }

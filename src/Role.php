@@ -55,7 +55,7 @@ class Role implements RoleInterface
      * @param $name
      * @return void
      */
-    public function addPermission(string $name): void
+    public function addPermission(string $name) : void
     {
         $this->permissions[$name] = true;
     }
@@ -66,7 +66,7 @@ class Role implements RoleInterface
      * @param  string $name
      * @return bool
      */
-    public function hasPermission(string $name): bool
+    public function hasPermission(string $name) : bool
     {
         if (isset($this->permissions[$name])) {
             return true;
@@ -86,11 +86,11 @@ class Role implements RoleInterface
      * @return void
      * @throws Exception\RuntimeException
      */
-    public function addChild(RoleInterface $child): void
+    public function addChild(RoleInterface $child) : void
     {
         $childName = $child->getName();
         if ($this->hasAncestor($child)) {
-            throw new Exception\RuntimeException(sprintf(
+            throw new Exception\CircularReferenceException(sprintf(
                 "To prevent circular references, you cannot add role '%s' as child",
                 $childName
             ));
@@ -107,7 +107,7 @@ class Role implements RoleInterface
      * @param RoleInterface $role
      * @return bool
      */
-    protected function hasAncestor(RoleInterface $role): bool
+    protected function hasAncestor(RoleInterface $role) : bool
     {
         if (isset($this->parents[$role->getName()])) {
             return true;
@@ -125,7 +125,7 @@ class Role implements RoleInterface
      *
      * @return RoleInterface[]
      */
-    public function getChildren(): array
+    public function getChildren() : array
     {
         return array_values($this->children);
     }
@@ -137,11 +137,11 @@ class Role implements RoleInterface
      * @return void
      * @throws Exception\RuntimeException
      */
-    public function addParent(RoleInterface $parent): void
+    public function addParent(RoleInterface $parent) : void
     {
         $parentName = $parent->getName();
         if ($this->hasDescendant($parent)) {
-            throw new Exception\RuntimeException(sprintf(
+            throw new Exception\CircularReferenceException(sprintf(
                 "To prevent circular references, you cannot add role '%s' as parent",
                 $parentName
             ));
@@ -158,7 +158,7 @@ class Role implements RoleInterface
      * @param RoleInterface $role
      * @return bool
      */
-    protected function hasDescendant(RoleInterface $role): bool
+    protected function hasDescendant(RoleInterface $role) : bool
     {
         if (isset($this->children[$role->getName()])) {
             return true;
@@ -176,7 +176,7 @@ class Role implements RoleInterface
      *
      * @return RoleInterface[]
      */
-    public function getParents(): array
+    public function getParents() : array
     {
         return array_values($this->parents);
     }

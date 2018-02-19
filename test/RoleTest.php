@@ -106,7 +106,7 @@ class RoleTest extends TestCase
 
         $foo->addChild($bar);
         $bar->addChild($baz);
-        $this->expectException(Exception\RuntimeException::class);
+        $this->expectException(Exception\CircularReferenceException::class);
         $baz->addChild($foo);
     }
 
@@ -119,7 +119,7 @@ class RoleTest extends TestCase
 
         $foo->addParent($bar);
         $bar->addParent($baz);
-        $this->expectException(Exception\RuntimeException::class);
+        $this->expectException(Exception\CircularReferenceException::class);
         $baz->addParent($foo);
     }
 }

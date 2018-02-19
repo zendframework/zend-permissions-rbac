@@ -35,8 +35,8 @@ class CallbackAssertion implements AssertionInterface
     /**
      * {@inheritdoc}
      */
-    public function assert(Rbac $rbac, string $permission = null, RoleInterface $role = null): bool
+    public function assert(Rbac $rbac, RoleInterface $role = null, string $permission = null) : bool
     {
-        return (bool) call_user_func($this->callback, $rbac);
+        return (bool) ($this->callback)($rbac, $role, $permission);
     }
 }
