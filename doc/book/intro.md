@@ -15,7 +15,7 @@ Thus, RBAC has the following model:
 
 - many to many relationship between **identities** and **roles**.
 - many to many relationship between **roles** and **permissions**.
-- **roles** can have parent and children roles (hierarchy of roles).
+- **roles** can have parent and child roles (hierarchy of roles).
 
 ## Roles
 
