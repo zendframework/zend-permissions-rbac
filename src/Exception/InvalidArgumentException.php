@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace Zend\Permissions\Rbac\Exception;
 
-class InvalidArgumentException extends \InvalidArgumentException implements
-    ExceptionInterface
+class InvalidArgumentException extends \InvalidArgumentException implements ExceptionInterface
 {
 }
