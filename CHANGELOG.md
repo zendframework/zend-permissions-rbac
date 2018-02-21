@@ -6,18 +6,32 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- Check for circular references in role hierarchy when using `Role::addChild()`
-  and `Role::addParent()` functions.
+- [#34](https://github.com/zendframework/zend-permissions-rbac/pull/34) adds
+  checks for circular references in the role hierarchy when using the
+  `Role::addChild()` and `Role::addParent()` methods.
 
 ### Changed
 
-- `Role::addChild(RoleInterface $child)`, accepts only `RoleInterface` parameter,
-   no string anymore.
-- `Role::addParent(RoleInterface $parent)`, accepts only `RoleInterface`
-   parameter, no string anymore.
-- `Zend\Permissions\Rbac\AssertionInterface`, added the optional parameters
-  `$permission` and `$role` in the `assert()` function, as follows:
-  `assert(Rbac $rbac, string $permission = null, RoleInterface $role = null)`
+- [#34](https://github.com/zendframework/zend-permissions-rbac/pull/34) updates
+  the `Role::addChild(RoleInterface $child)` method to accept only a `RoleInterface` parameter;
+  strings are no longer accepted.
+
+- [#34](https://github.com/zendframework/zend-permissions-rbac/pull/34) updates
+  the `Role::addParent(RoleInterface $parent)` method to only accept a
+  `RoleInterface` parameter; strings are no longer accepted.
+
+- [#34](https://github.com/zendframework/zend-permissions-rbac/pull/34) updates
+  the `Zend\Permissions\Rbac\AssertionInterface`, adding two optional parameters
+  to the `assert()` definition and defining a return type, so that it now reads
+  as follows:
+
+  ```php
+  public function assert(
+      Rbac $rbac,
+      string $permission = null,
+      RoleInterface $role = null
+  ) : bool
+  ```
 
 ### Deprecated
 
@@ -25,19 +39,26 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Removed
 
-- [AbstractIterator](https://github.com/zendframework/zend-permissions-rbac/blob/release-2.6.0/src/AbstractIterator.php),
-  removed the class. The role hierarchy is not based anymore on `RecursiveIterator`.
+- [#34](https://github.com/zendframework/zend-permissions-rbac/pull/34) removes
+  support for PHP versions prior to 7.1.
 
-- [AbstractRole](https://github.com/zendframework/zend-permissions-rbac/blob/release-2.6.0/src/AbstractRole.php),
-  removed the class. All the functions have been moved in `Zend\Permissions\Rbac\Role`.
+- [#34](https://github.com/zendframework/zend-permissions-rbac/pull/34) removes
+  the [AbstractIterator](https://github.com/zendframework/zend-permissions-rbac/blob/release-2.6.0/src/AbstractIterator.php)
+  class. The role hierarchy no longer relies on a `RecursiveIterator`.
 
-- `Role::setParent()`, use `Role::addParent()` instead.
+- [#34](https://github.com/zendframework/zend-permissions-rbac/pull/34) removes
+  the [AbstractRole](https://github.com/zendframework/zend-permissions-rbac/blob/release-2.6.0/src/AbstractRole.php)
+  class. All its functions have been merged to the `Zend\Permissions\Rbac\Role`
+  class.
+
+- [#34](https://github.com/zendframework/zend-permissions-rbac/pull/34) removes
+  the method `Role::setParent()`; use `Role::addParent()` instead.
 
 ### Fixed
 
-- [#30](https://github.com/zendframework/zend-permissions-rbac/issues/30), Fixed
-  circular references with the protected functions `Role::hasAncestor($role)`
-  used in `Role::addChild()` and `Role::hasDescendant($role)` in `Role::addParent()`.
+- [#30](https://github.com/zendframework/zend-permissions-rbac/issues/30) fixes
+  circular references within the used in `Role::addChild()` and
+  `Role::addParent()` algorithms.
 
 ## 2.6.0 - 2018-02-01
 
