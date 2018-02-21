@@ -13,32 +13,21 @@ interface RoleInterface
 {
     /**
      * Get the name of the role.
-     *
-     * @return string
      */
     public function getName() : string;
 
     /**
      * Add permission to the role.
-     *
-     * @param $name
-     * @return void
      */
     public function addPermission(string $name) : void;
 
     /**
      * Checks if a permission exists for this role or any child roles.
-     *
-     * @param  string $name
-     * @return bool
      */
     public function hasPermission(string $name) : bool;
 
     /**
      * Add a child.
-     *
-     * @param  RoleInterface $child
-     * @return void
      */
     public function addChild(RoleInterface $child) : void;
 
@@ -51,9 +40,6 @@ interface RoleInterface
 
     /**
      * Add a parent.
-     *
-     * @param RoleInterface $parent
-     * @return void
      */
     public function addParent(RoleInterface $parent) : void;
 
