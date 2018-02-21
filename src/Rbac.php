@@ -24,18 +24,11 @@ class Rbac
      */
     protected $createMissingRoles = false;
 
-    /**
-     * @param  bool $createMissingRoles
-     * @return void
-     */
     public function setCreateMissingRoles(bool $createMissingRoles) : void
     {
         $this->createMissingRoles = $createMissingRoles;
     }
 
-    /**
-     * @return bool
-     */
     public function getCreateMissingRoles() : bool
     {
         return $this->createMissingRoles;
@@ -44,10 +37,10 @@ class Rbac
     /**
      * Add a child.
      *
-     * @param  string|RoleInterface               $child
-     * @param  array|RoleInterface|null           $parents
-     * @return void
-     * @throws Exception\InvalidArgumentException
+     * @param  string|RoleInterface $role
+     * @param  null|array|RoleInterface $parents
+     * @throws Exception\InvalidArgumentException if $role is not a string or
+     *     RoleInterface.
      */
     public function addRole($role, $parents = null) : void
     {
@@ -61,9 +54,7 @@ class Rbac
         }
 
         if ($parents) {
-            if (! is_array($parents)) {
-                $parents = [$parents];
-            }
+            $parents = is_array($parents) ? $parents : [$parents];
             foreach ($parents as $parent) {
                 if ($this->createMissingRoles && ! $this->hasRole($parent)) {
                     $this->addRole($parent);
@@ -74,6 +65,7 @@ class Rbac
                 $parent->addChild($role);
             }
         }
+
         $this->roles[$role->getName()] = $role;
     }
 
@@ -81,7 +73,6 @@ class Rbac
      * Is a role registered?
      *
      * @param  RoleInterface|string $role
-     * @return bool
      */
     public function hasRole($role) : bool
     {
@@ -90,9 +81,11 @@ class Rbac
                 'Role must be a string or implement Zend\Permissions\Rbac\RoleInterface'
             );
         }
+
         if (is_string($role)) {
             return isset($this->roles[$role]);
         }
+
         $roleName = $role->getName();
         return isset($this->roles[$roleName])
             && $this->roles[$roleName] === $role;
@@ -101,9 +94,7 @@ class Rbac
     /**
      * Get a registered role by name
      *
-     * @param  string $roleName
-     * @return RoleInterface
-     * @throws Exception\InvalidArgumentException
+     * @throws Exception\InvalidArgumentException if role is not found.
      */
     public function getRole(string $roleName) : RoleInterface
     {
@@ -119,13 +110,12 @@ class Rbac
     /**
      * Determines if access is granted by checking the role and child roles for permission.
      *
-     * @param  RoleInterface|string             $role
-     * @param  string                           $permission
-     * @param  AssertionInterface|Callable|null $assert
-     * @return bool
-     * @throws Exception\InvalidArgumentException
+     * @param RoleInterface|string $role
+     * @param null|AssertionInterface|Callable $assertion
+     * @throws Exception\InvalidArgumentException if the role is not found.
+     * @throws Exception\InvalidArgumentException if the assertion is an invalid type.
      */
-    public function isGranted($role, string $permission, $assert = null) : bool
+    public function isGranted($role, string $permission, $assertion = null) : bool
     {
         if (! $this->hasRole($role)) {
             throw new Exception\InvalidArgumentException(sprintf(
@@ -133,21 +123,29 @@ class Rbac
                 is_object($role) ? $role->getName() : $role
             ));
         }
+
         if (is_string($role)) {
             $role = $this->getRole($role);
         }
+
         $result = $role->hasPermission($permission);
-        if (false === $result || null === $assert) {
+        if (false === $result || null === $assertion) {
             return $result;
         }
-        if ($assert instanceof AssertionInterface) {
-            return $result && $assert->assert($this, $role, $permission);
+
+        if (! $assertion instanceof AssertionInterface
+            && ! is_callable($assertion)
+        ) {
+            throw new Exception\InvalidArgumentException(
+                'Assertions must be a Callable or an instance of Zend\Permissions\Rbac\AssertionInterface'
+            );
         }
-        if (is_callable($assert)) {
-            return $result && $assert($this, $role, $permission);
+
+        if ($assertion instanceof AssertionInterface) {
+            return $result && $assertion->assert($this, $role, $permission);
         }
-        throw new Exception\InvalidArgumentException(
-            'Assertions must be a Callable or an instance of Zend\Permissions\Rbac\AssertionInterface'
-        );
+
+        // Callable assertion provided.
+        return $result && $assertion($this, $role, $permission);
     }
 }
