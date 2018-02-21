@@ -9,30 +9,24 @@ declare(strict_types=1);
 
 namespace ZendTest\Permissions\Rbac\Assertion;
 
+use Closure;
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 use Zend\Permissions\Rbac;
 
 class CallbackAssertionTest extends TestCase
 {
     /**
-     * Ensures constructor throws InvalidArgumentException if not callable is provided
-     */
-    public function testConstructorThrowsExceptionIfNotCallable()
-    {
-        $this->expectException(Rbac\Exception\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Invalid callback provided; not callable');
-        new Rbac\Assertion\CallbackAssertion('I am not callable!');
-    }
-
-    /**
      * Ensures callback is set in object
      */
-    public function testCallbackIsSet()
+    public function testCallbackIsDecoratedAsClosure()
     {
-        $callback   = function () {
+        $callback = function () {
         };
-        $assert     = new Rbac\Assertion\CallbackAssertion($callback);
-        $this->assertAttributeSame($callback, 'callback', $assert);
+        $assert = new Rbac\Assertion\CallbackAssertion($callback);
+        $this->assertAttributeNotSame($callback, 'callback', $assert);
+        $this->assertAttributeInstanceOf(Closure::class, 'callback', $assert);
     }
 
     /**
@@ -40,13 +34,12 @@ class CallbackAssertionTest extends TestCase
      */
     public function testAssertMethodPassRbacToCallback()
     {
-        $rbac   = new Rbac\Rbac();
-        $that   = $this;
-        $assert = new Rbac\Assertion\CallbackAssertion(function ($rbacArg) use ($that, $rbac) {
-            $that->assertSame($rbacArg, $rbac);
+        $rbac = new Rbac\Rbac();
+        $assert = new Rbac\Assertion\CallbackAssertion(function ($rbacArg) use ($rbac) {
+            Assert::assertSame($rbacArg, $rbac);
             return false;
         });
-        $foo  = new Rbac\Role('foo');
+        $foo = new Rbac\Role('foo');
         $foo->addPermission('can.foo');
         $rbac->addRole($foo);
         $this->assertFalse($rbac->isGranted($foo, 'can.foo', $assert));
@@ -63,7 +56,7 @@ class CallbackAssertionTest extends TestCase
 
         $assertRoleMatch = function ($role) {
             return function ($rbac) use ($role) {
-                return $role->getName() == 'foo';
+                return $role->getName() === 'foo';
             };
         };
 
@@ -102,7 +95,7 @@ class CallbackAssertionTest extends TestCase
         $foo->addPermission('can.foo');
         $rbac->addRole($foo);
 
-        $callable = new \stdClass();
+        $callable = new stdClass();
         $this->expectException(Rbac\Exception\InvalidArgumentException::class);
         $rbac->isGranted('foo', 'can.foo', $callable);
     }

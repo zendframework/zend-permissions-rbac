@@ -19,17 +19,18 @@ class CallbackAssertion implements AssertionInterface
     /**
      * @var callable
      */
-    protected $callback;
+    private $callback;
 
-    /**
-     * @param callable $callback The assertion callback
-     */
-    public function __construct($callback)
+    public function __construct(callable $callback)
     {
-        if (! is_callable($callback)) {
-            throw new InvalidArgumentException('Invalid callback provided; not callable');
-        }
-        $this->callback = $callback;
+        // Cast callable to a closure to enforce type safety.
+        $this->callback = function (
+            Rbac $rbac,
+            RoleInterface $role = null,
+            string $permission = null
+        ) use ($callback) : bool {
+            return $callback($rbac, $role, $permission);
+        };
     }
 
     /**
@@ -37,6 +38,6 @@ class CallbackAssertion implements AssertionInterface
      */
     public function assert(Rbac $rbac, RoleInterface $role = null, string $permission = null) : bool
     {
-        return (bool) ($this->callback)($rbac, $role, $permission);
+        return ($this->callback)($rbac, $role, $permission);
     }
 }
