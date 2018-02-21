@@ -1,6 +1,6 @@
 # Introduction
 
-`zend-permissions-rbac` provides a lightweight [Role-based access control](https://it.wikipedia.org/wiki/Role-based_access_control)
+`zend-permissions-rbac` provides a lightweight [Role-Based Access Control](https://it.wikipedia.org/wiki/Role-based_access_control)
 (RBAC) implementation in PHP. RBAC differs from access control lists (ACL) by
 putting the emphasis on roles and their permissions rather than objects
 (resources).
