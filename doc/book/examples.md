@@ -99,7 +99,7 @@ class AssertUserRoleMatches implements AssertionInterface
         $this->article = $article;
     }
 
-    public function assert(Rbac $rbac, string $permission = null, RoleInterface $role = null)
+    public function assert(Rbac $rbac, RoleInterface $role = null, string $permission = null)
     {
         if (! $this->article) {
             return false;
