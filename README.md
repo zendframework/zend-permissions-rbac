@@ -6,5 +6,5 @@
 Provides [Role-Based Access Control](https://it.wikipedia.org/wiki/Role-based_access_control)
 (RBAC) permissions management.
 
-- File issues at https://github.com/zendframework/zend-permissions-rbac
-- Documentation is at https://zendframework.github.io/zend-permissions-rbac/
+- File issues at https://github.com/zendframework/zend-permissions-rbac/issues
+- Documentation is at https://docs.zendframework.com/zend-permissions-rbac/
