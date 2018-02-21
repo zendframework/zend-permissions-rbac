@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace Zend\Permissions\Rbac\Exception;
 
-class CircularReferenceException extends \RuntimeException implements
-    ExceptionInterface
+class CircularReferenceException extends RuntimeException implements ExceptionInterface
 {
 }
