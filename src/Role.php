@@ -31,29 +31,21 @@ class Role implements RoleInterface
      */
     protected $permissions = [];
 
-    /**
-     * @param string $name
-     */
-    public function __construct($name)
+    public function __construct(string $name)
     {
         $this->name = $name;
     }
 
     /**
      * Get the name of the role.
-     *
-     * @return string
      */
-    public function getName(): string
+    public function getName() : string
     {
         return $this->name;
     }
 
     /**
-     * Add permission to the role.
-     *
-     * @param $name
-     * @return void
+     * Add a permission to the role.
      */
     public function addPermission(string $name) : void
     {
@@ -62,39 +54,37 @@ class Role implements RoleInterface
 
     /**
      * Checks if a permission exists for this role or any child roles.
-     *
-     * @param  string $name
-     * @return bool
      */
     public function hasPermission(string $name) : bool
     {
         if (isset($this->permissions[$name])) {
             return true;
         }
+
         foreach ($this->children as $child) {
             if ($child->hasPermission($name)) {
                 return true;
             }
         }
+
         return false;
     }
 
     /**
-     * Add a child
+     * Add a child rold.
      *
-     * @param  RoleInterface $child
-     * @return void
-     * @throws Exception\RuntimeException
+     * @throws Exception\CircularReferenceException
      */
     public function addChild(RoleInterface $child) : void
     {
         $childName = $child->getName();
         if ($this->hasAncestor($child)) {
             throw new Exception\CircularReferenceException(sprintf(
-                "To prevent circular references, you cannot add role '%s' as child",
+                'To prevent circular references, you cannot add role "%s" as child',
                 $childName
             ));
         }
+
         if (! isset($this->children[$childName])) {
             $this->children[$childName] = $child;
             $child->addParent($this);
@@ -102,26 +92,25 @@ class Role implements RoleInterface
     }
 
     /**
-     * Check if a role is an ancestor
-     *
-     * @param RoleInterface $role
-     * @return bool
+     * Check if a role is an ancestor.
      */
     protected function hasAncestor(RoleInterface $role) : bool
     {
         if (isset($this->parents[$role->getName()])) {
             return true;
         }
+
         foreach ($this->parents as $parent) {
             if ($parent->hasAncestor($role)) {
                 return true;
             }
         }
+
         return false;
     }
 
     /**
-     * Get the children roles
+     * Get all child roles
      *
      * @return RoleInterface[]
      */
@@ -131,21 +120,20 @@ class Role implements RoleInterface
     }
 
     /**
-     * Add a parent role
+     * Add a parent role.
      *
-     * @param  RoleInterface $parent
-     * @return void
-     * @throws Exception\RuntimeException
+     * @throws Exception\CircularReferenceException
      */
     public function addParent(RoleInterface $parent) : void
     {
         $parentName = $parent->getName();
         if ($this->hasDescendant($parent)) {
             throw new Exception\CircularReferenceException(sprintf(
-                "To prevent circular references, you cannot add role '%s' as parent",
+                'To prevent circular references, you cannot add role "%s" as parent',
                 $parentName
             ));
         }
+
         if (! isset($this->parents[$parentName])) {
             $this->parents[$parentName] = $parent;
             $parent->addChild($this);
@@ -153,26 +141,25 @@ class Role implements RoleInterface
     }
 
     /**
-     * Check if a role is a descendant
-     *
-     * @param RoleInterface $role
-     * @return bool
+     * Check if a role is a descendant.
      */
     protected function hasDescendant(RoleInterface $role) : bool
     {
         if (isset($this->children[$role->getName()])) {
             return true;
         }
+
         foreach ($this->children as $child) {
             if ($child->hasDescendant($role)) {
                 return true;
             }
         }
+
         return false;
     }
 
     /**
-     * Get the parent roles
+     * Get the parent roles.
      *
      * @return RoleInterface[]
      */
