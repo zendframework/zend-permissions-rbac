@@ -24,7 +24,7 @@ All notable changes to this project will be documented in this file, in reverse 
   ```php
   public function assert(
       Rbac $rbac,
-      RoleInterface $role = null,
+      RoleInterface $role,
       string $permission
   ) : bool
   ```
