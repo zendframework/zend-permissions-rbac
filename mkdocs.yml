@@ -6,8 +6,9 @@ pages:
     - Reference:
         - Methods: methods.md
         - Examples: examples.md
+        - Migration:
+            - 'v2.X to v3.0': migration/to-v3-0.md
 site_name: zend-permissions-rbac
 site_description: zend-permissions-rbac
 repo_url: 'https://github.com/zendframework/zend-permissions-rbac'
 copyright: 'Copyright (c) 2016 <a href="http://www.zend.com/">Zend Technologies USA Inc.</a>'
-

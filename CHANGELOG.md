@@ -17,19 +17,15 @@ All notable changes to this project will be documented in this file, in reverse 
   strings are no longer accepted.
 
 - [#34](https://github.com/zendframework/zend-permissions-rbac/pull/34) updates
-  the `Role::addParent(RoleInterface $parent)` method to only accept a
-  `RoleInterface` parameter; strings are no longer accepted.
-
-- [#34](https://github.com/zendframework/zend-permissions-rbac/pull/34) updates
-  the `Zend\Permissions\Rbac\AssertionInterface`, adding two optional parameters
-  to the `assert()` definition and defining a return type, so that it now reads
-  as follows:
+  the `Zend\Permissions\Rbac\AssertionInterface`, adding two parameters to the
+  `assert()` definition and defining a return type, so that it now reads as
+  follows:
 
   ```php
   public function assert(
       Rbac $rbac,
-      string $permission = null,
-      RoleInterface $role = null
+      RoleInterface $role = null,
+      string $permission
   ) : bool
   ```
 

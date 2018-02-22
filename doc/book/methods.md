@@ -20,9 +20,9 @@ Method signature                          | Description
 Custom assertions can be provided to `Rbac::isGranted()` (see below); such
 assertions are provided the `Rbac` instance on invocation.
 
-Method signature                                                            | Description
---------------------------------------------------------------------------- | -----------
-`assert(Rbac $rbac, RoleInterface $role = null, string $permission = null)` | Given an RBAC, an optional role, and an optional permission, determine if permission is granted.
+Method signature                                                     | Description
+-------------------------------------------------------------------- | -----------
+`assert(Rbac $rbac, RoleInterface $role, string $permission) : bool` | Given an RBAC, a role, and a permission, determine if permission is granted.
 
 ## `Zend\Permissions\Rbac\Rbac`
 

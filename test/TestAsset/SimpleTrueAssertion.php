@@ -15,7 +15,7 @@ use Zend\Permissions\Rbac\RoleInterface;
 
 class SimpleTrueAssertion implements AssertionInterface
 {
-    public function assert(Rbac $rbac, RoleInterface $role = null, string $permission = null) : bool
+    public function assert(Rbac $rbac, RoleInterface $role, string $permission) : bool
     {
         return true;
     }

@@ -14,5 +14,5 @@ interface AssertionInterface
     /**
      * Assertion method - must return a boolean.
      */
-    public function assert(Rbac $rbac, RoleInterface $role = null, string $permission = null) : bool;
+    public function assert(Rbac $rbac, RoleInterface $role, string $permission) : bool;
 }
