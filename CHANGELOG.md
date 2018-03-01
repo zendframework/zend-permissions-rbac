@@ -24,7 +24,7 @@ All notable changes to this project will be documented in this file, in reverse 
   ```php
   public function assert(
       Rbac $rbac,
-      RoleInterface $role = null,
+      RoleInterface $role,
       string $permission
   ) : bool
   ```
@@ -53,8 +53,8 @@ All notable changes to this project will be documented in this file, in reverse 
 ### Fixed
 
 - [#30](https://github.com/zendframework/zend-permissions-rbac/issues/30) fixes
-  circular references within the used in `Role::addChild()` and
-  `Role::addParent()` algorithms.
+  circular references within the `Role::addChild()` and `Role::addParent()`
+  algorithms.
 
 ## 2.6.0 - 2018-02-01
 
