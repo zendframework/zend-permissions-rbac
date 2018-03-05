@@ -9,6 +9,6 @@ declare(strict_types=1);
 
 namespace Zend\Permissions\Rbac\Exception;
 
-interface ExceptionInterface
+class RuntimeException extends \RuntimeException implements ExceptionInterface
 {
 }

@@ -2,15 +2,32 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.7.0 - TBD
+## 3.0.0 - TBD
 
 ### Added
 
-- Nothing.
+- [#34](https://github.com/zendframework/zend-permissions-rbac/pull/34) adds
+  checks for circular references in the role hierarchy when using the
+  `Role::addChild()` and `Role::addParent()` methods.
 
 ### Changed
 
-- Nothing.
+- [#34](https://github.com/zendframework/zend-permissions-rbac/pull/34) updates
+  the `Role::addChild(RoleInterface $child)` method to accept only a `RoleInterface` parameter;
+  strings are no longer accepted.
+
+- [#34](https://github.com/zendframework/zend-permissions-rbac/pull/34) updates
+  the `Zend\Permissions\Rbac\AssertionInterface`, adding two parameters to the
+  `assert()` definition and defining a return type, so that it now reads as
+  follows:
+
+  ```php
+  public function assert(
+      Rbac $rbac,
+      RoleInterface $role,
+      string $permission
+  ) : bool
+  ```
 
 ### Deprecated
 
@@ -18,33 +35,26 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Removed
 
-- Nothing.
+- [#34](https://github.com/zendframework/zend-permissions-rbac/pull/34) removes
+  support for PHP versions prior to 7.1.
+
+- [#34](https://github.com/zendframework/zend-permissions-rbac/pull/34) removes
+  the [AbstractIterator](https://github.com/zendframework/zend-permissions-rbac/blob/release-2.6.0/src/AbstractIterator.php)
+  class. The role hierarchy no longer relies on a `RecursiveIterator`.
+
+- [#34](https://github.com/zendframework/zend-permissions-rbac/pull/34) removes
+  the [AbstractRole](https://github.com/zendframework/zend-permissions-rbac/blob/release-2.6.0/src/AbstractRole.php)
+  class. All its functions have been merged to the `Zend\Permissions\Rbac\Role`
+  class.
+
+- [#34](https://github.com/zendframework/zend-permissions-rbac/pull/34) removes
+  the method `Role::setParent()`; use `Role::addParent()` instead.
 
 ### Fixed
 
-- Nothing.
-
-## 2.6.1 - TBD
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
+- [#30](https://github.com/zendframework/zend-permissions-rbac/issues/30) fixes
+  circular references within the `Role::addChild()` and `Role::addParent()`
+  algorithms.
 
 ## 2.6.0 - 2018-02-01
 
