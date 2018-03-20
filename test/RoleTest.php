@@ -55,7 +55,7 @@ class RoleTest extends TestCase
         $foo->addChild($bar);
         $foo->addChild($baz);
 
-        $this->assertEquals($foo->getChildren(), [$bar, $baz]);
+        $this->assertEquals([$bar, $baz], $foo->getChildren());
     }
 
     public function testAddParent()
@@ -66,7 +66,7 @@ class RoleTest extends TestCase
 
         $foo->addParent($bar);
         $foo->addParent($baz);
-        $this->assertEquals($foo->getParents(), [$bar, $baz]);
+        $this->assertEquals([$bar, $baz], $foo->getParents());
     }
 
     public function testPermissionHierarchy()
@@ -138,27 +138,27 @@ class RoleTest extends TestCase
         $foo->addParent($bar);
         $foo->addChild($baz);
 
-        $this->assertEquals($bar->getPermissions(), [
+        $this->assertEquals([
             'bar.permission',
             'foo.permission',
             'baz.permission'
-        ]);
-        $this->assertEquals($bar->getPermissions(false), [
+        ], $bar->getPermissions());
+        $this->assertEquals([
             'bar.permission'
-        ]);
-        $this->assertEquals($foo->getPermissions(), [
+        ], $bar->getPermissions(false));
+        $this->assertEquals([
             'foo.permission',
             'baz.permission'
-        ]);
-        $this->assertEquals($foo->getPermissions(false), [
+        ], $foo->getPermissions());
+        $this->assertEquals([
             'foo.permission'
-        ]);
-        $this->assertEquals($baz->getPermissions(), [
+        ], $foo->getPermissions(false));
+        $this->assertEquals([
             'baz.permission'
-        ]);
-        $this->assertEquals($baz->getPermissions(false), [
+        ], $baz->getPermissions());
+        $this->assertEquals([
             'baz.permission'
-        ]);
+        ], $baz->getPermissions(false));
     }
 
     public function testAddTwoChildRole()
