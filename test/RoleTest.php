@@ -122,4 +122,66 @@ class RoleTest extends TestCase
         $this->expectException(Exception\CircularReferenceException::class);
         $baz->addParent($foo);
     }
+
+    public function testGetPermissions()
+    {
+        $foo = new Role('foo');
+        $foo->addPermission('foo.permission');
+
+        $bar = new Role('bar');
+        $bar->addPermission('bar.permission');
+
+        $baz = new Role('baz');
+        $baz->addPermission('baz.permission');
+
+        // create hierarchy bar -> foo -> baz
+        $foo->addParent($bar);
+        $foo->addChild($baz);
+
+        $this->assertEquals($bar->getPermissions(), [
+            'bar.permission',
+            'foo.permission',
+            'baz.permission'
+        ]);
+        $this->assertEquals($bar->getPermissions(false), [
+            'bar.permission'
+        ]);
+        $this->assertEquals($foo->getPermissions(), [
+            'foo.permission',
+            'baz.permission'
+        ]);
+        $this->assertEquals($foo->getPermissions(false), [
+            'foo.permission'
+        ]);
+        $this->assertEquals($baz->getPermissions(), [
+            'baz.permission'
+        ]);
+        $this->assertEquals($baz->getPermissions(false), [
+            'baz.permission'
+        ]);
+    }
+
+    public function testAddTwoChildRole()
+    {
+        $foo = new Role('foo');
+        $bar = new Role('bar');
+        $baz = new Role('baz');
+
+        $foo->addChild($bar);
+        $foo->addChild($baz);
+
+        $this->assertEquals([$foo], $bar->getParents());
+        $this->assertEquals([$bar, $baz], $foo->getChildren());
+    }
+
+    public function testAddSameParent()
+    {
+        $foo = new Role('foo');
+        $bar = new Role('bar');
+
+        $foo->addParent($bar);
+        $foo->addParent($bar);
+
+        $this->assertEquals([$bar], $foo->getParents());
+    }
 }

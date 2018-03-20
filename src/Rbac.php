@@ -108,6 +108,16 @@ class Rbac
     }
 
     /**
+     * Return all the roles, included the children roles if $children == true
+     *
+     * @return RoleInterface[]
+     */
+    public function getRoles(): array
+    {
+        return array_values($this->roles);
+    }
+
+    /**
      * Determines if access is granted by checking the role and child roles for permission.
      *
      * @param RoleInterface|string $role

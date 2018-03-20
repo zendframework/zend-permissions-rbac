@@ -285,27 +285,22 @@ class RbacTest extends TestCase
         $this->assertFalse($this->rbac->isGranted('Manager', 'user.manage'));
     }
 
-    public function testAddTwoChildRole()
+    public function testGetRoles()
     {
-        $foo = new Rbac\Role('foo');
-        $bar = new Rbac\Role('bar');
-        $baz = new Rbac\Role('baz');
+        $adminRole = new Rbac\Role('Administrator');
+        $adminRole->addPermission('user.manage');
+        $this->rbac->addRole($adminRole);
 
-        $foo->addChild($bar);
-        $foo->addChild($baz);
+        $managerRole = new Rbac\Role('Manager');
+        $managerRole->addPermission('post.publish');
+        $managerRole->addParent($adminRole);
+        $this->rbac->addRole($managerRole);
 
-        $this->assertEquals([$foo], $bar->getParents());
-        $this->assertEquals([$bar, $baz], $foo->getChildren());
+        $this->assertEquals($this->rbac->getRoles(), [$adminRole, $managerRole]);
     }
 
-    public function testAddSameParent()
+    public function testEmptyRoles()
     {
-        $foo = new Rbac\Role('foo');
-        $bar = new Rbac\Role('bar');
-
-        $foo->addParent($bar);
-        $foo->addParent($bar);
-
-        $this->assertEquals([$bar], $foo->getParents());
+        $this->assertEquals($this->rbac->getRoles(), []);
     }
 }
