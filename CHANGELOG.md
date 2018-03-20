@@ -10,6 +10,15 @@ All notable changes to this project will be documented in this file, in reverse 
   checks for circular references in the role hierarchy when using the
   `Role::addChild()` and `Role::addParent()` methods.
 
+- [#35](https://github.com/zendframework/zend-permissions-rbac/pull/35) adds
+  the method `Role::getPermissions(bool $children = true)` for retrieving all
+  permissions to the related role, including all child permissions when
+  `$children` is boolean `true`.
+
+- [#35](https://github.com/zendframework/zend-permissions-rbac/pull/35) adds
+  the method `Rbac::getRoles()`, which returns all roles registered with the
+  instance as a flat array of instances.
+
 ### Changed
 
 - [#34](https://github.com/zendframework/zend-permissions-rbac/pull/34) updates
