@@ -108,7 +108,7 @@ class Rbac
     }
 
     /**
-     * Return all the roles, included the children roles if $children == true
+     * Return all the roles
      *
      * @return RoleInterface[]
      */
