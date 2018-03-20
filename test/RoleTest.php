@@ -143,19 +143,24 @@ class RoleTest extends TestCase
             'foo.permission',
             'baz.permission'
         ], $bar->getPermissions());
+
         $this->assertEquals([
             'bar.permission'
         ], $bar->getPermissions(false));
+
         $this->assertEquals([
             'foo.permission',
             'baz.permission'
         ], $foo->getPermissions());
+
         $this->assertEquals([
             'foo.permission'
         ], $foo->getPermissions(false));
+
         $this->assertEquals([
             'baz.permission'
         ], $baz->getPermissions());
+
         $this->assertEquals([
             'baz.permission'
         ], $baz->getPermissions(false));
