@@ -119,7 +119,7 @@ class RbacTest extends TestCase
         $this->assertFalse($this->rbac->hasRole('baz'));
 
         // check that 'snafu' role and $snafu are different
-        $this->assertNotEquals($this->rbac->getRole('snafu'), $snafu);
+        $this->assertNotEquals($snafu, $this->rbac->getRole('snafu'));
         $this->assertTrue($this->rbac->hasRole('snafu'));
         $this->assertFalse($this->rbac->hasRole($snafu));
     }
@@ -171,7 +171,7 @@ class RbacTest extends TestCase
         $this->rbac->addRole($foo);
         $this->rbac->addRole($bar, $foo);
 
-        $this->assertEquals($bar->getParents(), [$foo]);
+        $this->assertEquals([$foo], $bar->getParents());
         $this->assertEquals([$bar], $foo->getChildren());
     }
 
@@ -185,7 +185,7 @@ class RbacTest extends TestCase
         $this->assertTrue($this->rbac->getCreateMissingRoles());
         $this->rbac->addRole($bar, $foo);
 
-        $this->assertEquals($bar->getParents(), [$foo]);
+        $this->assertEquals([$foo], $bar->getParents());
         $this->assertEquals([$bar], $foo->getChildren());
     }
 
@@ -233,8 +233,8 @@ class RbacTest extends TestCase
         $this->assertTrue($this->rbac->isGranted('Editor', 'post.view'));
         $this->assertTrue($this->rbac->isGranted('Manager', 'post.view'));
 
-        $this->assertEquals($viewerRole->getParents(), [$editorRole, $managerRole]);
-        $this->assertEquals($managerRole->getParents(), [$adminRole]);
+        $this->assertEquals([$editorRole, $managerRole], $viewerRole->getParents());
+        $this->assertEquals([$adminRole], $managerRole->getParents());
         $this->assertEmpty($editorRole->getParents());
         $this->assertEmpty($adminRole->getParents());
     }
@@ -263,8 +263,8 @@ class RbacTest extends TestCase
         // Check roles hierarchy
         $this->assertEquals([$viewerRole], $editorRole->getChildren());
         $this->assertEquals([$viewerRole], $managerRole->getChildren());
-        $this->assertEquals($viewerRole->getParents(), [$editorRole, $managerRole]);
-        $this->assertEquals($managerRole->getParents(), [$adminRole]);
+        $this->assertEquals([$editorRole, $managerRole], $viewerRole->getParents());
+        $this->assertEquals([$adminRole], $managerRole->getParents());
         $this->assertEmpty($editorRole->getParents());
         $this->assertEmpty($adminRole->getParents());
 
@@ -285,27 +285,22 @@ class RbacTest extends TestCase
         $this->assertFalse($this->rbac->isGranted('Manager', 'user.manage'));
     }
 
-    public function testAddTwoChildRole()
+    public function testGetRoles()
     {
-        $foo = new Rbac\Role('foo');
-        $bar = new Rbac\Role('bar');
-        $baz = new Rbac\Role('baz');
+        $adminRole = new Rbac\Role('Administrator');
+        $adminRole->addPermission('user.manage');
+        $this->rbac->addRole($adminRole);
 
-        $foo->addChild($bar);
-        $foo->addChild($baz);
+        $managerRole = new Rbac\Role('Manager');
+        $managerRole->addPermission('post.publish');
+        $managerRole->addParent($adminRole);
+        $this->rbac->addRole($managerRole);
 
-        $this->assertEquals([$foo], $bar->getParents());
-        $this->assertEquals([$bar, $baz], $foo->getChildren());
+        $this->assertEquals([$adminRole, $managerRole], $this->rbac->getRoles());
     }
 
-    public function testAddSameParent()
+    public function testEmptyRoles()
     {
-        $foo = new Rbac\Role('foo');
-        $bar = new Rbac\Role('bar');
-
-        $foo->addParent($bar);
-        $foo->addParent($bar);
-
-        $this->assertEquals([$bar], $foo->getParents());
+        $this->assertEquals([], $this->rbac->getRoles());
     }
 }
