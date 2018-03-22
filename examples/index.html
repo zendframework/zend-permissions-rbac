@@ -13,7 +13,7 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../css/styles-482aa2add1.css">
+    <link rel="stylesheet" href="../css/styles-288837cc22.css">
 
     
 </head>
@@ -86,6 +86,25 @@
 
 
                         
+                            
+
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Migration</a>
+    <ul class="dropdown-menu">
+        
+            
+
+<li >
+    <a href="../migration/to-v3-0/">v2.X to v3.0</a>
+</li>
+
+
+        
+    </ul>
+  </li>
+
+
+                        
                         </ul>
                     </li>
                 
@@ -108,7 +127,7 @@
                 </li>
                 
                     <li>
-                        <a href="https://github.com/zendframework/zend-permissions-rbac">
+                        <a href="https://github.com/zendframework/zend-permissions-rbac/">
                             
                                 <i class="fa fa-github"></i>
                             
@@ -138,6 +157,15 @@
     
     </ul>
 
+    
+    <ul class="pager hidden-print">
+      <li class="previous">
+        <a rel="prev" href="../methods/"><i class="fa fa-arrow-left"></i> Previous</a>
+      </li>
+      <li class="next">
+        <a rel="next" href="../migration/to-v3-0/">Next <i class="fa fa-arrow-right"></i></a>
+      </li>
+    </ul>
     
 </div></div>
         <div class="col-md-9" role="main">
@@ -218,30 +246,30 @@ $rbac-&gt;isGranted('foo', 'baz'); // true</code></pre>
 <h2 id="dynamic-assertions">Dynamic Assertions</h2>
 <p>Checking permission using <code>isGranted()</code> with a class implementing
 <code>Zend\Permissions\Rbac\AssertionInterface</code>:</p>
-<pre class="codehilite"><code class="language-php">use Zend\Permissions\Rbac\AssertionInterface;
+<pre class="codehilite"><code class="language-php">use App\Model\Article;
+use Zend\Permissions\Rbac\AssertionInterface;
 use Zend\Permissions\Rbac\Rbac;
 
-class AssertUserIdMatches implements AssertionInterface
+class AssertUserRoleMatches implements AssertionInterface
 {
     protected $userId;
     protected $article;
 
-    public function __construct($userId)
+    public function __construct(string $userId)
     {
         $this-&gt;userId = $userId;
     }
 
-    public function setArticle($article)
+    public function setArticle(Article $article)
     {
         $this-&gt;article = $article;
     }
 
-    public function assert(Rbac $rbac)
+    public function assert(Rbac $rbac, RoleInterface $role = null, string $permission = null)
     {
         if (! $this-&gt;article) {
             return false;
         }
-
         return ($this-&gt;userId === $this-&gt;article-&gt;getUserId());
     }
 }
@@ -292,6 +320,17 @@ if ($rbac-&gt;isGranted($user-&gt;getRole(), 'edit.article', $assertion)) {
 
 <hr />
 
+
+<nav>
+  <ul class="pager hidden-print">
+    <li class="previous">
+      <a rel="prev" href="../methods/"><i class="fa fa-arrow-left"></i> Previous</a>
+    </li>
+    <li class="next">
+      <a rel="next" href="../migration/to-v3-0/">Next <i class="fa fa-arrow-right"></i></a>
+    </li>
+  </ul>
+</nav>
 </div>
         
     </div>
@@ -346,6 +385,8 @@ if ($rbac-&gt;isGranted($user-&gt;getRole(), 'edit.article', $assertion)) {
     <script>var base_url = '..';</script>
     <script src="../js/scripts-0b6185f4a5.js"></script>
     <script data-main="../mkdocs/js/search.js" src="../mkdocs/js/require.js"></script>
+        <script src="../search/require.js"></script>
+        <script src="../search/search.js"></script>
 
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
         <div class="modal-dialog">

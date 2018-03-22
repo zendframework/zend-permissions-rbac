@@ -1,0 +1,134 @@
+{
+    "docs": [
+        {
+            "location": "/",
+            "text": "../../README.md",
+            "title": "Home"
+        },
+        {
+            "location": "/intro/",
+            "text": "Introduction\n\n\nzend-permissions-rbac\n provides a lightweight \nRole-Based Access Control\n\n(RBAC) implementation in PHP. RBAC differs from access control lists (ACL) by\nputting the emphasis on roles and their permissions rather than objects\n(resources).\n\n\nFor the purposes of this documentation:\n\n\n\n\nan \nidentity\n has one or more roles.\n\n\na \nrole\n requests access to a permission.\n\n\na \npermission\n is given to a role.\n\n\n\n\nThus, RBAC has the following model:\n\n\n\n\nmany to many relationship between \nidentities\n and \nroles\n.\n\n\nmany to many relationship between \nroles\n and \npermissions\n.\n\n\nroles\n can have parent and child roles (hierarchy of roles).\n\n\n\n\nRoles\n\n\nTo create a role, extend the abstract class \nZend\\Permission\\Rbac\\AbstractRole\n\nor use the default role class, \nZend\\Permission\\Rbac\\Role\n. You can instantiate\na role and add it to the RBAC container or add a role directly using the RBAC\ncontainer \naddRole()\n method.\n\n\nPermissions\n\n\nEach role can have zero or more permissions and can be set directly to the role\nor by first retrieving the role from the RBAC container. Any parent role will\ninherit the permissions of their children.\n\n\nDynamic Assertions\n\n\nIn certain situations simply checking a permission key for access may not be\nenough. For example, assume two users, Foo and Bar, both have \narticle.edit\n\npermission. What's to stop Bar from editing Foo's articles? The answer is\ndynamic assertions which allow you to specify extra runtime credentials that\nmust pass for access to be granted.",
+            "title": "Intro"
+        },
+        {
+            "location": "/intro/#introduction",
+            "text": "zend-permissions-rbac  provides a lightweight  Role-Based Access Control \n(RBAC) implementation in PHP. RBAC differs from access control lists (ACL) by\nputting the emphasis on roles and their permissions rather than objects\n(resources).  For the purposes of this documentation:   an  identity  has one or more roles.  a  role  requests access to a permission.  a  permission  is given to a role.   Thus, RBAC has the following model:   many to many relationship between  identities  and  roles .  many to many relationship between  roles  and  permissions .  roles  can have parent and child roles (hierarchy of roles).",
+            "title": "Introduction"
+        },
+        {
+            "location": "/intro/#roles",
+            "text": "To create a role, extend the abstract class  Zend\\Permission\\Rbac\\AbstractRole \nor use the default role class,  Zend\\Permission\\Rbac\\Role . You can instantiate\na role and add it to the RBAC container or add a role directly using the RBAC\ncontainer  addRole()  method.",
+            "title": "Roles"
+        },
+        {
+            "location": "/intro/#permissions",
+            "text": "Each role can have zero or more permissions and can be set directly to the role\nor by first retrieving the role from the RBAC container. Any parent role will\ninherit the permissions of their children.",
+            "title": "Permissions"
+        },
+        {
+            "location": "/intro/#dynamic-assertions",
+            "text": "In certain situations simply checking a permission key for access may not be\nenough. For example, assume two users, Foo and Bar, both have  article.edit \npermission. What's to stop Bar from editing Foo's articles? The answer is\ndynamic assertions which allow you to specify extra runtime credentials that\nmust pass for access to be granted.",
+            "title": "Dynamic Assertions"
+        },
+        {
+            "location": "/methods/",
+            "text": "Methods\n\n\nZend\\Permissions\\Rbac\\Role\n\n\nThe \nRole\n provides the base functionality required by the \nRoleInterface\n.\n\n\n\n\n\n\n\n\nMethod signature\n\n\nDescription\n\n\n\n\n\n\n\n\n\n\n__construct(string $name) : void\n\n\nCreate a new instance with the provided name.\n\n\n\n\n\n\ngetName() : string\n\n\nRetrieve the name assigned to this role.\n\n\n\n\n\n\naddPermission(string $name) : void\n\n\nAdd a permission for the current role.\n\n\n\n\n\n\nhasPermission(string $name) : bool\n\n\nDoes the role have the given permission?\n\n\n\n\n\n\ngetPermissions(bool $children = true) : array\n\n\nRetrieve all permissions, including child permissions if \n$children\n is true.\n\n\n\n\n\n\naddChild(RoleInterface $child) : Role\n\n\nAdd a child role to the current instance.\n\n\n\n\n\n\ngetChildren() : RoleInterface[]\n\n\nGet all child roles.\n\n\n\n\n\n\naddParent(RoleInterface $parent) : Role\n\n\nAdd a parent role to the current instance.\n\n\n\n\n\n\ngetParents() : RoleInterface[]\n\n\nGet all parent roles.\n\n\n\n\n\n\n\n\nZend\\Permissions\\Rbac\\AssertionInterface\n\n\nCustom assertions can be provided to \nRbac::isGranted()\n (see below); such\nassertions are provided the \nRbac\n instance on invocation, along with the role\nand permission being tested against.\n\n\n\n\n\n\n\n\nMethod signature\n\n\nDescription\n\n\n\n\n\n\n\n\n\n\nassert(Rbac $rbac, RoleInterface $role, string $permission) : bool\n\n\nGiven an RBAC, a role, and a permission, determine if permission is granted.\n\n\n\n\n\n\n\n\nZend\\Permissions\\Rbac\\Rbac\n\n\nRbac\n is the object with which you will interact within your application in\norder to query for permissions.\n\n\n\n\n\n\n\n\nMethod signature\n\n\nDescription\n\n\n\n\n\n\n\n\n\n\naddRole(string\\|RoleInterface $child, array\\|RoleInterface $parents = null)\n\n\nAdd a role to the RBAC. If \n$parents\n is non-null, the \n$child\n is also added to any parents provided.\n\n\n\n\n\n\ngetRole(string $role) : RoleInterface\n\n\nGet the role specified by name, raising an exception if not found.\n\n\n\n\n\n\ngetRoles(): RoleInterface[]\n\n\nRetrieve all the roles.\n\n\n\n\n\n\nhasRole(string\\|RoleInterface $role) : bool\n\n\nRecursively queries the RBAC for the given role, returning \ntrue\n if found, \nfalse\n otherwise.\n\n\n\n\n\n\ngetCreateMissingRoles() : bool\n\n\nRetrieve the flag that determines whether or not \n$parent\n roles are added automatically if not present when calling \naddRole()\n.\n\n\n\n\n\n\nsetCreateMissingRoles(bool $flag) : void\n\n\nSet the flag that determines whether or not \n$parent\n roles are added automatically if not present when calling \naddRole()\n.\n\n\n\n\n\n\nisGranted(string\\|RoleInterface $role, string $permission, $assert = null)\n\n\nDetermine if the role has the given permission. If \n$assert\n is provided and either an \nAssertInterface\n instance or callable, it will be queried before checking against the given role.",
+            "title": "Methods"
+        },
+        {
+            "location": "/methods/#methods",
+            "text": "",
+            "title": "Methods"
+        },
+        {
+            "location": "/methods/#zendpermissionsrbacrole",
+            "text": "The  Role  provides the base functionality required by the  RoleInterface .     Method signature  Description      __construct(string $name) : void  Create a new instance with the provided name.    getName() : string  Retrieve the name assigned to this role.    addPermission(string $name) : void  Add a permission for the current role.    hasPermission(string $name) : bool  Does the role have the given permission?    getPermissions(bool $children = true) : array  Retrieve all permissions, including child permissions if  $children  is true.    addChild(RoleInterface $child) : Role  Add a child role to the current instance.    getChildren() : RoleInterface[]  Get all child roles.    addParent(RoleInterface $parent) : Role  Add a parent role to the current instance.    getParents() : RoleInterface[]  Get all parent roles.",
+            "title": "Zend\\Permissions\\Rbac\\Role"
+        },
+        {
+            "location": "/methods/#zendpermissionsrbacassertioninterface",
+            "text": "Custom assertions can be provided to  Rbac::isGranted()  (see below); such\nassertions are provided the  Rbac  instance on invocation, along with the role\nand permission being tested against.     Method signature  Description      assert(Rbac $rbac, RoleInterface $role, string $permission) : bool  Given an RBAC, a role, and a permission, determine if permission is granted.",
+            "title": "Zend\\Permissions\\Rbac\\AssertionInterface"
+        },
+        {
+            "location": "/methods/#zendpermissionsrbacrbac",
+            "text": "Rbac  is the object with which you will interact within your application in\norder to query for permissions.     Method signature  Description      addRole(string\\|RoleInterface $child, array\\|RoleInterface $parents = null)  Add a role to the RBAC. If  $parents  is non-null, the  $child  is also added to any parents provided.    getRole(string $role) : RoleInterface  Get the role specified by name, raising an exception if not found.    getRoles(): RoleInterface[]  Retrieve all the roles.    hasRole(string\\|RoleInterface $role) : bool  Recursively queries the RBAC for the given role, returning  true  if found,  false  otherwise.    getCreateMissingRoles() : bool  Retrieve the flag that determines whether or not  $parent  roles are added automatically if not present when calling  addRole() .    setCreateMissingRoles(bool $flag) : void  Set the flag that determines whether or not  $parent  roles are added automatically if not present when calling  addRole() .    isGranted(string\\|RoleInterface $role, string $permission, $assert = null)  Determine if the role has the given permission. If  $assert  is provided and either an  AssertInterface  instance or callable, it will be queried before checking against the given role.",
+            "title": "Zend\\Permissions\\Rbac\\Rbac"
+        },
+        {
+            "location": "/examples/",
+            "text": "Examples\n\n\nThe following is a list of common use-case examples for zend-permission-rbac.\n\n\nRoles\n\n\nExtending and adding roles via instantiation:\n\n\nuse Zend\\Permissions\\Rbac\\Rbac;\nuse Zend\\Permissions\\Rbac\\AbstractRole;\n\nclass MyRole extends AbstractRole\n{\n    // .. implementation\n}\n\n// Creating roles manually\n$foo  = new MyRole('foo');\n\n$rbac = new Rbac();\n$rbac->addRole($foo);\n\nvar_dump($rbac->hasRole('foo')); // true\n\n\n\nAdding roles directly to RBAC with the default \nZend\\Permission\\Rbac\\Role\n:\n\n\nuse Zend\\Permissions\\Rbac\\Rbac;\n\n$rbac = new Rbac();\n$rbac->addRole('foo');\n\nvar_dump($rbac->hasRole('foo')); // true\n\n\n\nHandling roles with children:\n\n\nuse Zend\\Permissions\\Rbac\\Rbac;\nuse Zend\\Permissions\\Rbac\\Role;\n\n$rbac = new Rbac();\n$foo  = new Role('foo');\n$bar  = new Role('bar');\n\n// 1 - Add a role with child role directly with instantiated classes.\n$foo->addChild($bar);\n$rbac->addRole($foo);\n\n// 2 - Same as one, only via rbac container.\n$rbac->addRole('boo', 'baz'); // baz is a parent of boo\n$rbac->addRole('baz', ['out', 'of', 'roles']); // create several parents of baz\n\n\n\nPermissions\n\n\nuse Zend\\Permissions\\Rbac\\Rbac;\nuse Zend\\Permissions\\Rbac\\Role;\n\n$rbac = new Rbac();\n$foo  = new Role('foo');\n$foo->addPermission('bar');\n\nvar_dump($foo->hasPermission('bar')); // true\n\n$rbac->addRole($foo);\n$rbac->isGranted('foo', 'bar'); // true\n$rbac->isGranted('foo', 'baz'); // false\n\n$rbac->getRole('foo')->addPermission('baz');\n$rbac->isGranted('foo', 'baz'); // true\n\n\n\nDynamic Assertions\n\n\nChecking permission using \nisGranted()\n with a class implementing\n\nZend\\Permissions\\Rbac\\AssertionInterface\n:\n\n\nuse App\\Model\\Article;\nuse Zend\\Permissions\\Rbac\\AssertionInterface;\nuse Zend\\Permissions\\Rbac\\Rbac;\n\nclass AssertUserRoleMatches implements AssertionInterface\n{\n    protected $userId;\n    protected $article;\n\n    public function __construct(string $userId)\n    {\n        $this->userId = $userId;\n    }\n\n    public function setArticle(Article $article)\n    {\n        $this->article = $article;\n    }\n\n    public function assert(Rbac $rbac, RoleInterface $role = null, string $permission = null)\n    {\n        if (! $this->article) {\n            return false;\n        }\n        return ($this->userId === $this->article->getUserId());\n    }\n}\n\n// User is assigned the foo role with id 5\n// News article belongs to userId 5\n// Jazz article belongs to userId 6\n\n$rbac = new Rbac();\n$user = $mySessionObject->getUser();\n$news = $articleService->getArticle(5);\n$jazz = $articleService->getArticle(6);\n\n$rbac->addRole($user->getRole());\n$rbac->getRole($user->getRole())->addPermission('edit.article');\n\n$assertion = new AssertUserIdMatches($user->getId());\n$assertion->setArticle($news);\n\n// true always - bad!\nif ($rbac->isGranted($user->getRole(), 'edit.article')) {\n    // hacks another user's article\n}\n\n// true for user id 5, because he belongs to write group and user id matches\nif ($rbac->isGranted($user->getRole(), 'edit.article', $assertion)) {\n    // edits his own article\n}\n\n$assertion->setArticle($jazz);\n\n// false for user id 5\nif ($rbac->isGranted($user->getRole(), 'edit.article', $assertion)) {\n    // can not edit another user's article\n}\n\n\n\nPerforming the same as above with a closure:\n\n\n// assume same variables from previous example\n\n$assertion = function($rbac) use ($user, $news) {\n    return ($user->getId() === $news->getUserId());\n};\n\n// true\nif ($rbac->isGranted($user->getRole(), 'edit.article', $assertion)) {\n    // edits his own article\n}",
+            "title": "Examples"
+        },
+        {
+            "location": "/examples/#examples",
+            "text": "The following is a list of common use-case examples for zend-permission-rbac.",
+            "title": "Examples"
+        },
+        {
+            "location": "/examples/#roles",
+            "text": "Extending and adding roles via instantiation:  use Zend\\Permissions\\Rbac\\Rbac;\nuse Zend\\Permissions\\Rbac\\AbstractRole;\n\nclass MyRole extends AbstractRole\n{\n    // .. implementation\n}\n\n// Creating roles manually\n$foo  = new MyRole('foo');\n\n$rbac = new Rbac();\n$rbac->addRole($foo);\n\nvar_dump($rbac->hasRole('foo')); // true  Adding roles directly to RBAC with the default  Zend\\Permission\\Rbac\\Role :  use Zend\\Permissions\\Rbac\\Rbac;\n\n$rbac = new Rbac();\n$rbac->addRole('foo');\n\nvar_dump($rbac->hasRole('foo')); // true  Handling roles with children:  use Zend\\Permissions\\Rbac\\Rbac;\nuse Zend\\Permissions\\Rbac\\Role;\n\n$rbac = new Rbac();\n$foo  = new Role('foo');\n$bar  = new Role('bar');\n\n// 1 - Add a role with child role directly with instantiated classes.\n$foo->addChild($bar);\n$rbac->addRole($foo);\n\n// 2 - Same as one, only via rbac container.\n$rbac->addRole('boo', 'baz'); // baz is a parent of boo\n$rbac->addRole('baz', ['out', 'of', 'roles']); // create several parents of baz",
+            "title": "Roles"
+        },
+        {
+            "location": "/examples/#permissions",
+            "text": "use Zend\\Permissions\\Rbac\\Rbac;\nuse Zend\\Permissions\\Rbac\\Role;\n\n$rbac = new Rbac();\n$foo  = new Role('foo');\n$foo->addPermission('bar');\n\nvar_dump($foo->hasPermission('bar')); // true\n\n$rbac->addRole($foo);\n$rbac->isGranted('foo', 'bar'); // true\n$rbac->isGranted('foo', 'baz'); // false\n\n$rbac->getRole('foo')->addPermission('baz');\n$rbac->isGranted('foo', 'baz'); // true",
+            "title": "Permissions"
+        },
+        {
+            "location": "/examples/#dynamic-assertions",
+            "text": "Checking permission using  isGranted()  with a class implementing Zend\\Permissions\\Rbac\\AssertionInterface :  use App\\Model\\Article;\nuse Zend\\Permissions\\Rbac\\AssertionInterface;\nuse Zend\\Permissions\\Rbac\\Rbac;\n\nclass AssertUserRoleMatches implements AssertionInterface\n{\n    protected $userId;\n    protected $article;\n\n    public function __construct(string $userId)\n    {\n        $this->userId = $userId;\n    }\n\n    public function setArticle(Article $article)\n    {\n        $this->article = $article;\n    }\n\n    public function assert(Rbac $rbac, RoleInterface $role = null, string $permission = null)\n    {\n        if (! $this->article) {\n            return false;\n        }\n        return ($this->userId === $this->article->getUserId());\n    }\n}\n\n// User is assigned the foo role with id 5\n// News article belongs to userId 5\n// Jazz article belongs to userId 6\n\n$rbac = new Rbac();\n$user = $mySessionObject->getUser();\n$news = $articleService->getArticle(5);\n$jazz = $articleService->getArticle(6);\n\n$rbac->addRole($user->getRole());\n$rbac->getRole($user->getRole())->addPermission('edit.article');\n\n$assertion = new AssertUserIdMatches($user->getId());\n$assertion->setArticle($news);\n\n// true always - bad!\nif ($rbac->isGranted($user->getRole(), 'edit.article')) {\n    // hacks another user's article\n}\n\n// true for user id 5, because he belongs to write group and user id matches\nif ($rbac->isGranted($user->getRole(), 'edit.article', $assertion)) {\n    // edits his own article\n}\n\n$assertion->setArticle($jazz);\n\n// false for user id 5\nif ($rbac->isGranted($user->getRole(), 'edit.article', $assertion)) {\n    // can not edit another user's article\n}  Performing the same as above with a closure:  // assume same variables from previous example\n\n$assertion = function($rbac) use ($user, $news) {\n    return ($user->getId() === $news->getUserId());\n};\n\n// true\nif ($rbac->isGranted($user->getRole(), 'edit.article', $assertion)) {\n    // edits his own article\n}",
+            "title": "Dynamic Assertions"
+        },
+        {
+            "location": "/migration/to-v3-0/",
+            "text": "Upgrading to 3.0\n\n\nIf you upgrade from version 2 releases, you will notice a few changes. This\ndocument details the changes\n\n\nMinimum supported PHP version\n\n\nVersion 3 drops support for PHP versions prior to PHP 7.1.\n\n\nAssertionInterface\n\n\nThe primary change is the \nZend\\Permissions\\Rbac\\AssertionInterface::assert()\n\nmethod definition.\n\n\nThe new \nassert\n method has the following signature:\n\n\nnamespace Zend\\Permissions\\Rbac;\n\npublic function assert(\n    Rbac $rbac,\n    RoleInterface $role,\n    string $permission\n) : bool\n\n\n\nThe version 2 releases defined the method such that it only accepted a single\nparameter, \nRbac $rbac\n. Version 3 adds the \n$role\n and \n$permission\n\nparameters. This simplifies implementation of dynamic assertions using the role\nand the permission information.\n\n\nFor instance, imagine you want to disable a specific permission \nfoo\n for an\n\nadmin\n role; you can implement that as follows:\n\n\npublic function assert(Rbac $rbac, RoleInterface $role, string $permission) : bool\n{\n    return ! ($permission === 'foo' && $role->getName() === 'admin');\n}\n\n\n\nIf you were previously implementing \nAssertionInterface\n, you will need to\nupdate the \nassert()\n signature to match the changes in version 3.\n\n\nIf you were creating assertions as PHP callables, you may continue to use the\nexisting signature; however, you may also expand them to accept the new\narguments should they assist you in creating more complex, dynamic assertions.\n\n\nRoleInterface\n\n\nZend\\Permissions\\Rbac\\RoleInterface\n also received a number of changes,\nincluding type hints and method name changes.\n\n\nType hints\n\n\nWith the update to \nPHP 7.1\n, we also updated\nthe \nRoleInterface\n to provide:\n\n\n\n\nscalar type hints where applicable (\naddPermission()\n and \nhasPermission()\n).\n\n\nadd return type hints (including scalar type hints) to all methods.\n\n\n\n\nYou will need to examine the \nRoleInterface\n definitions to determine what\nchanges to make to your implementations.\n\n\nsetParent becomes addParent\n\n\nIn version 3, we renamed the method \nRole::setParent()\n to \nRole::addParent()\n.\nThis naming is more consistent with other method names, such as\n\nRole::addChild()\n, and also makes clear that more than one parent may be\nprovided to any given role.\n\n\ngetParent becomes getParents\n\n\nIn line with the previous change, \ngetParent()\n was also renamed to\n\ngetParents()\n, which returns an array of \nRoleInterface\n instances.\n\n\nRemoved support for string arguments in Role::addChild\n\n\nVersion 3 no longer allows adding a child using a string role name; you may only\nprovide \nRoleInterface\n instances.\n\n\nAdds getChildren\n\n\nSince roles may have multiple children, the method \ngetChildren()\n was added; it\nreturns an array of \nRoleInterface\n instances.",
+            "title": "v2.X to v3.0"
+        },
+        {
+            "location": "/migration/to-v3-0/#upgrading-to-30",
+            "text": "If you upgrade from version 2 releases, you will notice a few changes. This\ndocument details the changes",
+            "title": "Upgrading to 3.0"
+        },
+        {
+            "location": "/migration/to-v3-0/#minimum-supported-php-version",
+            "text": "Version 3 drops support for PHP versions prior to PHP 7.1.",
+            "title": "Minimum supported PHP version"
+        },
+        {
+            "location": "/migration/to-v3-0/#assertioninterface",
+            "text": "The primary change is the  Zend\\Permissions\\Rbac\\AssertionInterface::assert() \nmethod definition.  The new  assert  method has the following signature:  namespace Zend\\Permissions\\Rbac;\n\npublic function assert(\n    Rbac $rbac,\n    RoleInterface $role,\n    string $permission\n) : bool  The version 2 releases defined the method such that it only accepted a single\nparameter,  Rbac $rbac . Version 3 adds the  $role  and  $permission \nparameters. This simplifies implementation of dynamic assertions using the role\nand the permission information.  For instance, imagine you want to disable a specific permission  foo  for an admin  role; you can implement that as follows:  public function assert(Rbac $rbac, RoleInterface $role, string $permission) : bool\n{\n    return ! ($permission === 'foo' && $role->getName() === 'admin');\n}  If you were previously implementing  AssertionInterface , you will need to\nupdate the  assert()  signature to match the changes in version 3.  If you were creating assertions as PHP callables, you may continue to use the\nexisting signature; however, you may also expand them to accept the new\narguments should they assist you in creating more complex, dynamic assertions.",
+            "title": "AssertionInterface"
+        },
+        {
+            "location": "/migration/to-v3-0/#roleinterface",
+            "text": "Zend\\Permissions\\Rbac\\RoleInterface  also received a number of changes,\nincluding type hints and method name changes.",
+            "title": "RoleInterface"
+        },
+        {
+            "location": "/migration/to-v3-0/#type-hints",
+            "text": "With the update to  PHP 7.1 , we also updated\nthe  RoleInterface  to provide:   scalar type hints where applicable ( addPermission()  and  hasPermission() ).  add return type hints (including scalar type hints) to all methods.   You will need to examine the  RoleInterface  definitions to determine what\nchanges to make to your implementations.",
+            "title": "Type hints"
+        },
+        {
+            "location": "/migration/to-v3-0/#setparent-becomes-addparent",
+            "text": "In version 3, we renamed the method  Role::setParent()  to  Role::addParent() .\nThis naming is more consistent with other method names, such as Role::addChild() , and also makes clear that more than one parent may be\nprovided to any given role.",
+            "title": "setParent becomes addParent"
+        },
+        {
+            "location": "/migration/to-v3-0/#getparent-becomes-getparents",
+            "text": "In line with the previous change,  getParent()  was also renamed to getParents() , which returns an array of  RoleInterface  instances.",
+            "title": "getParent becomes getParents"
+        },
+        {
+            "location": "/migration/to-v3-0/#removed-support-for-string-arguments-in-roleaddchild",
+            "text": "Version 3 no longer allows adding a child using a string role name; you may only\nprovide  RoleInterface  instances.",
+            "title": "Removed support for string arguments in Role::addChild"
+        },
+        {
+            "location": "/migration/to-v3-0/#adds-getchildren",
+            "text": "Since roles may have multiple children, the method  getChildren()  was added; it\nreturns an array of  RoleInterface  instances.",
+            "title": "Adds getChildren"
+        }
+    ]
+}

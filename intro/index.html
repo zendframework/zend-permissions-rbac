@@ -13,7 +13,7 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../css/styles-482aa2add1.css">
+    <link rel="stylesheet" href="../css/styles-288837cc22.css">
 
     
 </head>
@@ -86,6 +86,25 @@
 
 
                         
+                            
+
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Migration</a>
+    <ul class="dropdown-menu">
+        
+            
+
+<li >
+    <a href="../migration/to-v3-0/">v2.X to v3.0</a>
+</li>
+
+
+        
+    </ul>
+  </li>
+
+
+                        
                         </ul>
                     </li>
                 
@@ -108,7 +127,7 @@
                 </li>
                 
                     <li>
-                        <a href="https://github.com/zendframework/zend-permissions-rbac">
+                        <a href="https://github.com/zendframework/zend-permissions-rbac/">
                             
                                 <i class="fa fa-github"></i>
                             
@@ -160,9 +179,8 @@
 </ol>
 
 <h1 id="introduction">Introduction</h1>
-<p>zend-permissions-rbac provides a lightweight role-based access control (RBAC)
-implementation based around PHP's <code>RecursiveIterator</code> and
-<code>RecursiveIteratorIterator</code>. RBAC differs from access control lists (ACL) by
+<p><code>zend-permissions-rbac</code> provides a lightweight <a href="https://it.wikipedia.org/wiki/Role-based_access_control">Role-Based Access Control</a>
+(RBAC) implementation in PHP. RBAC differs from access control lists (ACL) by
 putting the emphasis on roles and their permissions rather than objects
 (resources).</p>
 <p>For the purposes of this documentation:</p>
@@ -175,7 +193,7 @@ putting the emphasis on roles and their permissions rather than objects
 <ul>
 <li>many to many relationship between <strong>identities</strong> and <strong>roles</strong>.</li>
 <li>many to many relationship between <strong>roles</strong> and <strong>permissions</strong>.</li>
-<li><strong>roles</strong> can have a parent role.</li>
+<li><strong>roles</strong> can have parent and child roles (hierarchy of roles).</li>
 </ul>
 <h2 id="roles">Roles</h2>
 <p>To create a role, extend the abstract class <code>Zend\Permission\Rbac\AbstractRole</code>
@@ -260,6 +278,8 @@ must pass for access to be granted.</p>
     <script>var base_url = '..';</script>
     <script src="../js/scripts-0b6185f4a5.js"></script>
     <script data-main="../mkdocs/js/search.js" src="../mkdocs/js/require.js"></script>
+        <script src="../search/require.js"></script>
+        <script src="../search/search.js"></script>
 
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
         <div class="modal-dialog">

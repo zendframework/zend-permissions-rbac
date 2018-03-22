@@ -7,13 +7,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="zend-permissions-rbac">  
-    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="shortcut icon" href="../../img/favicon.ico">
 
-    <title>zend-permissions-rbac</title>
+    <title>v2.X to v3.0 - zend-permissions-rbac</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/css/styles-482aa2add1.css">
+    <link rel="stylesheet" href="../../css/styles-288837cc22.css">
 
     
 </head>
@@ -37,8 +37,8 @@
 
             <!-- Main title -->
             <span class="navbar-brand">
-                <a class="logo-link" href="https://framework.zend.com/" data-toggle="tooltip" data-placement="bottom" title="Go to the ZF homepage"><img src="/img/zf-logo-mark.svg" height="28" alt="Zend Framework" /></a>
-                <a href="/">zend-permissions-rbac</a>
+                <a class="logo-link" href="https://framework.zend.com/" data-toggle="tooltip" data-placement="bottom" title="Go to the ZF homepage"><img src="../../img/zf-logo-mark.svg" height="28" alt="Zend Framework" /></a>
+                <a href="../..">zend-permissions-rbac</a>
             </span>
         </div>
 
@@ -51,7 +51,7 @@
                 
                 
                     <li >
-                        <a href="/">Home</a>
+                        <a href="../..">Home</a>
                     </li>
                 
                 
@@ -59,21 +59,21 @@
                 
                 
                     <li >
-                        <a href="/intro/">Intro</a>
+                        <a href="../../intro/">Intro</a>
                     </li>
                 
                 
                 
                 
                 
-                    <li class="dropdown">
+                    <li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                         
                             
 
 <li >
-    <a href="/methods/">Methods</a>
+    <a href="../../methods/">Methods</a>
 </li>
 
 
@@ -81,8 +81,27 @@
                             
 
 <li >
-    <a href="/examples/">Examples</a>
+    <a href="../../examples/">Examples</a>
 </li>
+
+
+                        
+                            
+
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Migration</a>
+    <ul class="dropdown-menu">
+        
+            
+
+<li class="active">
+    <a href="./">v2.X to v3.0</a>
+</li>
+
+
+        
+    </ul>
+  </li>
 
 
                         
@@ -108,7 +127,7 @@
                 </li>
                 
                     <li>
-                        <a href="https://github.com/zendframework/zend-permissions-rbac">
+                        <a href="https://github.com/zendframework/zend-permissions-rbac/">
                             
                                 <i class="fa fa-github"></i>
                             
@@ -124,16 +143,104 @@
     <!-- content:begin -->
     <div id="page-top" class="container docs">
         
+        <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#upgrading-to-30">Upgrading to 3.0</a></li>
+        
+            <li><a href="#minimum-supported-php-version">Minimum supported PHP version</a></li>
+        
+            <li><a href="#assertioninterface">AssertionInterface</a></li>
+        
+            <li><a href="#roleinterface">RoleInterface</a></li>
+        
+    
+    </ul>
 
-    <div class="row-fluid">
-      <div id="main-content" class="span12">
-        <h1 id="404-page-not-found" style="text-align: center">404</h1>
-        <p style="text-align: center"><strong>Page not found</strong></p>
-        <p style="text-align: center"><a href="/">Home</a></p>
-      </div>
-    </div>
+    
+</div></div>
+        <div class="col-md-9" role="main">
 
+<ol class="breadcrumb" role="navigation" aria-label="breadcrumbs navigation">
+  <li><a href="../..">zend-permissions-rbac</a></li>
+  
+    
+      
+        <li>Reference</li>
+      
+    
+      
+        <li>Migration</li>
+      
+    
+  
+  <li class="active">v2.X to v3.0</li>
+</ol>
 
+<h1 id="upgrading-to-30">Upgrading to 3.0</h1>
+<p>If you upgrade from version 2 releases, you will notice a few changes. This
+document details the changes</p>
+<h2 id="minimum-supported-php-version">Minimum supported PHP version</h2>
+<p>Version 3 drops support for PHP versions prior to PHP 7.1.</p>
+<h2 id="assertioninterface">AssertionInterface</h2>
+<p>The primary change is the <code>Zend\Permissions\Rbac\AssertionInterface::assert()</code>
+method definition.</p>
+<p>The new <code>assert</code> method has the following signature:</p>
+<pre class="codehilite"><code class="language-php">namespace Zend\Permissions\Rbac;
+
+public function assert(
+    Rbac $rbac,
+    RoleInterface $role,
+    string $permission
+) : bool</code></pre>
+
+<p>The version 2 releases defined the method such that it only accepted a single
+parameter, <code>Rbac $rbac</code>. Version 3 adds the <code>$role</code> and <code>$permission</code>
+parameters. This simplifies implementation of dynamic assertions using the role
+and the permission information.</p>
+<p>For instance, imagine you want to disable a specific permission <code>foo</code> for an
+<code>admin</code> role; you can implement that as follows:</p>
+<pre class="codehilite"><code class="language-php">public function assert(Rbac $rbac, RoleInterface $role, string $permission) : bool
+{
+    return ! ($permission === 'foo' &amp;&amp; $role-&gt;getName() === 'admin');
+}</code></pre>
+
+<p>If you were previously implementing <code>AssertionInterface</code>, you will need to
+update the <code>assert()</code> signature to match the changes in version 3.</p>
+<p>If you were creating assertions as PHP callables, you may continue to use the
+existing signature; however, you may also expand them to accept the new
+arguments should they assist you in creating more complex, dynamic assertions.</p>
+<h2 id="roleinterface">RoleInterface</h2>
+<p><code>Zend\Permissions\Rbac\RoleInterface</code> also received a number of changes,
+including type hints and method name changes.</p>
+<h3 id="type-hints">Type hints</h3>
+<p>With the update to <a href="#minimum-supported-php-version">PHP 7.1</a>, we also updated
+the <code>RoleInterface</code> to provide:</p>
+<ul>
+<li>scalar type hints where applicable (<code>addPermission()</code> and <code>hasPermission()</code>).</li>
+<li>add return type hints (including scalar type hints) to all methods.</li>
+</ul>
+<p>You will need to examine the <code>RoleInterface</code> definitions to determine what
+changes to make to your implementations.</p>
+<h3 id="setparent-becomes-addparent">setParent becomes addParent</h3>
+<p>In version 3, we renamed the method <code>Role::setParent()</code> to <code>Role::addParent()</code>.
+This naming is more consistent with other method names, such as
+<code>Role::addChild()</code>, and also makes clear that more than one parent may be
+provided to any given role.</p>
+<h3 id="getparent-becomes-getparents">getParent becomes getParents</h3>
+<p>In line with the previous change, <code>getParent()</code> was also renamed to
+<code>getParents()</code>, which returns an array of <code>RoleInterface</code> instances.</p>
+<h3 id="removed-support-for-string-arguments-in-roleaddchild">Removed support for string arguments in Role::addChild</h3>
+<p>Version 3 no longer allows adding a child using a string role name; you may only
+provide <code>RoleInterface</code> instances.</p>
+<h3 id="adds-getchildren">Adds getChildren</h3>
+<p>Since roles may have multiple children, the method <code>getChildren()</code> was added; it
+returns an array of <code>RoleInterface</code> instances.</p>
+
+<hr />
+
+</div>
+        
     </div>
     <!-- content:end -->
 
@@ -183,9 +290,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@2.2.4/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
-    <script>var base_url = '';</script>
-    <script src="/js/scripts-0b6185f4a5.js"></script>
-    <script data-main="/mkdocs/js/search.js" src="/mkdocs/js/require.js"></script>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/scripts-0b6185f4a5.js"></script>
+    <script data-main="../../mkdocs/js/search.js" src="../../mkdocs/js/require.js"></script>
+        <script src="../../search/require.js"></script>
+        <script src="../../search/search.js"></script>
 
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
         <div class="modal-dialog">
@@ -217,7 +326,7 @@
     <div class="zf-components">
   <div class="zf-components-grid">
     <div class="zf-logo">
-      <a href="https://framework.zend.com" data-toggle="tooltip" data-placement="bottom" title="Go to the ZF homepage"><img src="/img/zf-logo-mark.svg" alt="Zend Framework" width="250" /></a>
+      <a href="https://framework.zend.com" data-toggle="tooltip" data-placement="bottom" title="Go to the ZF homepage"><img src="../../img/zf-logo-mark.svg" alt="Zend Framework" width="250" /></a>
     </div>
 
     <div class="component-list"></div>

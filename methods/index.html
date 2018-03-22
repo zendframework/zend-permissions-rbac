@@ -13,7 +13,7 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../css/styles-482aa2add1.css">
+    <link rel="stylesheet" href="../css/styles-288837cc22.css">
 
     
 </head>
@@ -86,6 +86,25 @@
 
 
                         
+                            
+
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Migration</a>
+    <ul class="dropdown-menu">
+        
+            
+
+<li >
+    <a href="../migration/to-v3-0/">v2.X to v3.0</a>
+</li>
+
+
+        
+    </ul>
+  </li>
+
+
+                        
                         </ul>
                     </li>
                 
@@ -108,7 +127,7 @@
                 </li>
                 
                     <li>
-                        <a href="https://github.com/zendframework/zend-permissions-rbac">
+                        <a href="https://github.com/zendframework/zend-permissions-rbac/">
                             
                                 <i class="fa fa-github"></i>
                             
@@ -129,15 +148,11 @@
     
         <li class="main active"><a href="#methods">Methods</a></li>
         
-            <li><a href="#zendpermissionsrbacabstractiterator">Zend\Permissions\Rbac\AbstractIterator</a></li>
-        
-            <li><a href="#zendpermissionsrbacabstractrole">Zend\Permissions\Rbac\AbstractRole</a></li>
+            <li><a href="#zendpermissionsrbacrole">Zend\Permissions\Rbac\Role</a></li>
         
             <li><a href="#zendpermissionsrbacassertioninterface">Zend\Permissions\Rbac\AssertionInterface</a></li>
         
             <li><a href="#zendpermissionsrbacrbac">Zend\Permissions\Rbac\Rbac</a></li>
-        
-            <li><a href="#zendpermissionsrbacrole">Zend\Permissions\Rbac\Role</a></li>
         
     
     </ul>
@@ -168,9 +183,8 @@
 </ol>
 
 <h1 id="methods">Methods</h1>
-<h2 id="zendpermissionsrbacabstractiterator"><code>Zend\Permissions\Rbac\AbstractIterator</code></h2>
-<p>The <code>AbstractIterator</code> is used as the basis for both the primary <code>Rbac</code> class
-and the <code>AbstractRole</code>.</p>
+<h2 id="zendpermissionsrbacrole"><code>Zend\Permissions\Rbac\Role</code></h2>
+<p>The <code>Role</code> provides the base functionality required by the <code>RoleInterface</code>.</p>
 <div class="table-responsive"><table>
 <thead>
 <tr>
@@ -180,79 +194,47 @@ and the <code>AbstractRole</code>.</p>
 </thead>
 <tbody>
 <tr>
-<td><code>current() : RoleInterface</code></td>
-<td>Return the current role instance.</td>
-</tr>
-<tr>
-<td><code>getChildren() : RecursiveIterator</code></td>
-<td>Returns a recursive iterator of all children of the current role.</td>
-</tr>
-<tr>
-<td><code>hasChildren() : bool</code></td>
-<td>Indicates if the current role has children.</td>
-</tr>
-<tr>
-<td><code>key() : int</code></td>
-<td>Index of the current role instance.</td>
-</tr>
-<tr>
-<td><code>next() : void</code></td>
-<td>Advance to the next role instance.</td>
-</tr>
-<tr>
-<td><code>rewind() : void</code></td>
-<td>Seek to the first item in the iterator.</td>
-</tr>
-<tr>
-<td><code>valid() : bool</code></td>
-<td>Is the current index valid?</td>
-</tr>
-</tbody>
-</table></div>
-<h2 id="zendpermissionsrbacabstractrole"><code>Zend\Permissions\Rbac\AbstractRole</code></h2>
-<p>The <code>AbstractRole</code> provides the base functionality required by the
-<code>RoleInterface</code>, and is the foundation for the <code>Role</code> class.</p>
-<div class="table-responsive"><table>
-<thead>
-<tr>
-<th>Method signature</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>addChild(string|RoleInterface $child) : void</code></td>
-<td>Add a child role to the current instance.</td>
-</tr>
-<tr>
-<td><code>addPermission(string $name) : void</code></td>
-<td>Add a permission for the current role.</td>
+<td><code>__construct(string $name) : void</code></td>
+<td>Create a new instance with the provided name.</td>
 </tr>
 <tr>
 <td><code>getName() : string</code></td>
 <td>Retrieve the name assigned to this role.</td>
 </tr>
 <tr>
+<td><code>addPermission(string $name) : void</code></td>
+<td>Add a permission for the current role.</td>
+</tr>
+<tr>
 <td><code>hasPermission(string $name) : bool</code></td>
 <td>Does the role have the given permission?</td>
 </tr>
 <tr>
-<td><code>setParent(RoleInterface $parent) : void</code></td>
-<td>Assign the provided role as the current role's parent.</td>
+<td><code>getPermissions(bool $children = true) : array</code></td>
+<td>Retrieve all permissions, including child permissions if <code>$children</code> is true.</td>
+</tr>
+<tr>
+<td><code>addChild(RoleInterface $child) : Role</code></td>
+<td>Add a child role to the current instance.</td>
+</tr>
+<tr>
+<td><code>getChildren() : RoleInterface[]</code></td>
+<td>Get all child roles.</td>
 </tr>
 <tr>
 <td><code>addParent(RoleInterface $parent) : Role</code></td>
 <td>Add a parent role to the current instance.</td>
 </tr>
 <tr>
-<td><code>getParent() null|RoleInterface|array</code></td>
-<td>Retrieve the current role's parent, or array of parents if more that one exists.</td>
+<td><code>getParents() : RoleInterface[]</code></td>
+<td>Get all parent roles.</td>
 </tr>
 </tbody>
 </table></div>
 <h2 id="zendpermissionsrbacassertioninterface"><code>Zend\Permissions\Rbac\AssertionInterface</code></h2>
 <p>Custom assertions can be provided to <code>Rbac::isGranted()</code> (see below); such
-assertions are provided the <code>Rbac</code> instance on invocation.</p>
+assertions are provided the <code>Rbac</code> instance on invocation, along with the role
+and permission being tested against.</p>
 <div class="table-responsive"><table>
 <thead>
 <tr>
@@ -262,14 +244,14 @@ assertions are provided the <code>Rbac</code> instance on invocation.</p>
 </thead>
 <tbody>
 <tr>
-<td><code>assert(Rbac $rbac) : bool</code></td>
-<td>Given an RBAC, determine if permission is granted.</td>
+<td><code>assert(Rbac $rbac, RoleInterface $role, string $permission) : bool</code></td>
+<td>Given an RBAC, a role, and a permission, determine if permission is granted.</td>
 </tr>
 </tbody>
 </table></div>
 <h2 id="zendpermissionsrbacrbac"><code>Zend\Permissions\Rbac\Rbac</code></h2>
 <p><code>Rbac</code> is the object with which you will interact within your application in
-order to query for permissions. It extends <code>AbstractIterator</code>.</p>
+order to query for permissions.</p>
 <div class="table-responsive"><table>
 <thead>
 <tr>
@@ -283,8 +265,12 @@ order to query for permissions. It extends <code>AbstractIterator</code>.</p>
 <td>Add a role to the RBAC. If <code>$parents</code> is non-null, the <code>$child</code> is also added to any parents provided.</td>
 </tr>
 <tr>
-<td><code>getRole(string|RoleInterface $role) : RoleInterface</code></td>
-<td>Recursively queries the RBAC for the given role, returning it if found, and raising an exception otherwise.</td>
+<td><code>getRole(string $role) : RoleInterface</code></td>
+<td>Get the role specified by name, raising an exception if not found.</td>
+</tr>
+<tr>
+<td><code>getRoles(): RoleInterface[]</code></td>
+<td>Retrieve all the roles.</td>
 </tr>
 <tr>
 <td><code>hasRole(string|RoleInterface $role) : bool</code></td>
@@ -301,22 +287,6 @@ order to query for permissions. It extends <code>AbstractIterator</code>.</p>
 <tr>
 <td><code>isGranted(string|RoleInterface $role, string $permission, $assert = null)</code></td>
 <td>Determine if the role has the given permission. If <code>$assert</code> is provided and either an <code>AssertInterface</code> instance or callable, it will be queried before checking against the given role.</td>
-</tr>
-</tbody>
-</table></div>
-<h2 id="zendpermissionsrbacrole"><code>Zend\Permissions\Rbac\Role</code></h2>
-<p><code>Role</code> inherits from <code>AbstractRole</code> and <code>AbstractIterator</code>.</p>
-<div class="table-responsive"><table>
-<thead>
-<tr>
-<th>Method signature</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>__construct(string $name) : void</code></td>
-<td>Create a new instance with the provided name.</td>
 </tr>
 </tbody>
 </table></div>
@@ -388,6 +358,8 @@ order to query for permissions. It extends <code>AbstractIterator</code>.</p>
     <script>var base_url = '..';</script>
     <script src="../js/scripts-0b6185f4a5.js"></script>
     <script data-main="../mkdocs/js/search.js" src="../mkdocs/js/require.js"></script>
+        <script src="../search/require.js"></script>
+        <script src="../search/search.js"></script>
 
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
         <div class="modal-dialog">
