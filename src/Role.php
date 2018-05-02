@@ -86,7 +86,7 @@ class Role implements RoleInterface
     }
 
     /**
-     * Add a child rold.
+     * Add a child role.
      *
      * @throws Exception\CircularReferenceException
      */
