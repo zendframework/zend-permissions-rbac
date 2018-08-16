@@ -22,7 +22,8 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#39](https://github.com/zendframework/zend-permissions-rbac/pull/39) fixes
+  `Role::getPermissions()` to return all the permissions, if more than one.
 
 ## 3.0.0 - 2018-03-22
 
