@@ -76,7 +76,7 @@ class Role implements RoleInterface
      */
     public function getPermissions(bool $children = true) : array
     {
-        $permissions = (array) key($this->permissions);
+        $permissions = array_keys($this->permissions);
         if ($children) {
             foreach ($this->children as $child) {
                 $permissions = array_merge($permissions, $child->getPermissions());
