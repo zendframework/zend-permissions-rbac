@@ -127,6 +127,7 @@ class RoleTest extends TestCase
     {
         $foo = new Role('foo');
         $foo->addPermission('foo.permission');
+        $foo->addPermission('foo.2nd-permission');
 
         $bar = new Role('bar');
         $bar->addPermission('bar.permission');
@@ -141,6 +142,7 @@ class RoleTest extends TestCase
         $this->assertEquals([
             'bar.permission',
             'foo.permission',
+            'foo.2nd-permission',
             'baz.permission'
         ], $bar->getPermissions());
 
@@ -150,11 +152,13 @@ class RoleTest extends TestCase
 
         $this->assertEquals([
             'foo.permission',
+            'foo.2nd-permission',
             'baz.permission'
         ], $foo->getPermissions());
 
         $this->assertEquals([
-            'foo.permission'
+            'foo.permission',
+            'foo.2nd-permission'
         ], $foo->getPermissions(false));
 
         $this->assertEquals([
