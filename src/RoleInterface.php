@@ -36,7 +36,7 @@ interface RoleInterface
      *
      * @return RoleInterface[]
      */
-    public function getChildren() : array;
+    public function getChildren() : iterable;
 
     /**
      * Add a parent.
@@ -48,5 +48,5 @@ interface RoleInterface
      *
      * @return RoleInterface[]
      */
-    public function getParents() : array;
+    public function getParents() : iterable;
 }
