@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 3.0.1 - TBD
+## 3.1.0 - TBD
 
 ### Added
 
@@ -22,9 +22,33 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
+- Nothing.
+
+## 3.0.1 - 2018-08-20
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- [#37](https://github.com/zendframework/zend-permissions-rbac/pull/37) changes
+  the return type hints of `RoleInterface::getChildren()` and `RoleInterface::getParents()`
+  from `array` to `iterable`. This is not a BC break thanks to [Iterable Type Variance](http://php.net/manual/en/language.types.iterable.php#language.types.iterable.variance)
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
 - [#39](https://github.com/zendframework/zend-permissions-rbac/pull/39) fixes
   `Role::getPermissions()` to return all the permissions, if more than one.
-
+  
 ## 3.0.0 - 2018-03-22
 
 ### Added
