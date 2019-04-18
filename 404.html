@@ -7,11 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="zend-permissions-rbac">  
-    <link rel="shortcut icon" href="../img/favicon.ico">
+    <link rel="shortcut icon" href="//img/favicon.ico">
 
-    <title>Intro - zend-permissions-rbac - Zend Framework Docs</title>
+    <title>zend-permissions-rbac - Zend Framework Docs</title>
 
-    <link rel="stylesheet" href="../css/styles-f3b53f5ceb.css">
+    <link rel="stylesheet" href="//css/styles-f3b53f5ceb.css">
 </head>
 <body id="page-top">
 
@@ -31,7 +31,7 @@
             
             <span class="navbar-brand">
                 <a class="logo-link" href="https://framework.zend.com/" data-tooltip data-placement="bottom" title="Go to the ZF homepage">
-                    <img src="../img/zend-framework-logo.svg" height="28" alt="Zend Framework">
+                    <img src="//img/zend-framework-logo.svg" height="28" alt="Zend Framework">
                 </a>
             </span>
         </div>
@@ -66,7 +66,7 @@
                     
     <div class="subnavigation hidden-print">
         <h4 class="subnavigation__title">
-            <a href="..">zend-permissions-rbac</a>
+            <a href="/.">zend-permissions-rbac</a>
         </h4>
 
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
@@ -74,8 +74,8 @@
         <ul class="subnavigation__list">
             
                 
-                    <li class="subnavigation__list-item subnavigation__list-item--active">
-                        <a href="./" class="subnavigation__link">Intro</a>
+                    <li class="subnavigation__list-item ">
+                        <a href="/intro/" class="subnavigation__link">Intro</a>
                     </li>
                 
             
@@ -86,13 +86,13 @@
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../methods/" class="subnavigation__link">Methods</a>
+        <a href="/methods/" class="subnavigation__link">Methods</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../examples/" class="subnavigation__link">Examples</a>
+        <a href="/examples/" class="subnavigation__link">Examples</a>
     </li>
 
                             
@@ -103,7 +103,7 @@
             
                 
     <li class="subnavigation__list-item ">
-        <a href="../migration/to-v3-0/" class="subnavigation__link">v2.X to v3.0</a>
+        <a href="/migration/to-v3-0/" class="subnavigation__link">v2.X to v3.0</a>
     </li>
 
             
@@ -184,121 +184,18 @@
             <div class="col-md-9 col-xs-12 content" role="main">
             <!-- content:begin -->
                 
-                    <ol class="breadcrumb" role="navigation" aria-label="breadcrumbs navigation">
-    <li><a href="https://framework.zend.com/">Home</a></li>
 
-    
-        <li><a href="https://docs.zendframework.com/">Documentation</a></li>
+<h1 class="content__title">404</h1>
+<blockquote>
+    <h3>Something went wrong!</h3>
+    <p>
+        We're sorry, but the page you are looking for does not exist.
+    </p>
+</blockquote>
 
-        
-            <li><a href="..">zend-permissions-rbac</a></li>
-
-            
-
-            <li class="active">Intro</li>
-        
-    
-</ol>
+<a href="/" class="btn btn-default" role="button">Go to homepage</a>
 
 
-    
-
-    
-    
-
-    
-    
-        <div class="toc">
-            <h6 class="toc__headline">In This Article</h6>
-            <ul class="toc__list">
-                
-                    <li class="toc__entry">
-                        <a href="#roles" class="toc__link">Roles</a>
-                    </li>
-                
-                    <li class="toc__entry">
-                        <a href="#permissions" class="toc__link">Permissions</a>
-                    </li>
-                
-                    <li class="toc__entry">
-                        <a href="#dynamic-assertions" class="toc__link">Dynamic Assertions</a>
-                    </li>
-                
-            </ul>
-        </div>
-    
-
-
-    <h1 id="introduction">Introduction</h1>
-<p><code>zend-permissions-rbac</code> provides a lightweight <a href="https://it.wikipedia.org/wiki/Role-based_access_control">Role-Based Access Control</a>
-(RBAC) implementation in PHP. RBAC differs from access control lists (ACL) by
-putting the emphasis on roles and their permissions rather than objects
-(resources).</p>
-<p>For the purposes of this documentation:</p>
-<ul>
-<li>an <strong>identity</strong> has one or more roles.</li>
-<li>a <strong>role</strong> requests access to a permission.</li>
-<li>a <strong>permission</strong> is given to a role.</li>
-</ul>
-<p>Thus, RBAC has the following model:</p>
-<ul>
-<li>many to many relationship between <strong>identities</strong> and <strong>roles</strong>.</li>
-<li>many to many relationship between <strong>roles</strong> and <strong>permissions</strong>.</li>
-<li><strong>roles</strong> can have parent and child roles (hierarchy of roles).</li>
-</ul>
-<h2 id="roles">Roles</h2>
-<p>To create a role, extend the abstract class <code>Zend\Permission\Rbac\AbstractRole</code>
-or use the default role class, <code>Zend\Permission\Rbac\Role</code>. You can instantiate
-a role and add it to the RBAC container or add a role directly using the RBAC
-container <code>addRole()</code> method.</p>
-<h2 id="permissions">Permissions</h2>
-<p>Each role can have zero or more permissions and can be set directly to the role
-or by first retrieving the role from the RBAC container. Any parent role will
-inherit the permissions of their children.</p>
-<h2 id="dynamic-assertions">Dynamic Assertions</h2>
-<p>In certain situations simply checking a permission key for access may not be
-enough. For example, assume two users, Foo and Bar, both have <code>article.edit</code>
-permission. What's to stop Bar from editing Foo's articles? The answer is
-dynamic assertions which allow you to specify extra runtime credentials that
-must pass for access to be granted.</p>
-
-
-
-    <nav>
-    <ul class="page-nav hidden-print">
-
-        
-        <li class="page-nav__item">
-            
-                <a rel="prev" class="page-nav__link page-nav__link--prev" href="..">
-                    <i class="fa fa-chevron-left"></i> Previous
-                </a>
-            
-        </li>
-
-        
-        <li class="page-nav__item">
-            
-                <a rel="next" class="page-nav__link page-nav__link--next" href="../methods/">
-                    Next <i class="fa fa-chevron-right"></i>
-                </a>
-            
-        </li>
-    </ul>
-</nav>
-
-
-
-    <div class="help-wanted">
-        <p>
-            Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/zendframework/zend-permissions-rbac/edit/master/doc/book/intro.md" target="_blank" class="help-wanted__link">
-                Edit this page on GitHub!
-            </a>
-        </p>
-    </div>
-
-                
             <!-- content:end -->
             </div>
             <div class="col-md-3 col-xs-12 sidebar">
@@ -314,7 +211,7 @@ must pass for access to be granted.</p>
                     
     <div class="subnavigation hidden-print">
         <h4 class="subnavigation__title">
-            <a href="..">zend-permissions-rbac</a>
+            <a href="/.">zend-permissions-rbac</a>
         </h4>
 
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
@@ -322,8 +219,8 @@ must pass for access to be granted.</p>
         <ul class="subnavigation__list">
             
                 
-                    <li class="subnavigation__list-item subnavigation__list-item--active">
-                        <a href="./" class="subnavigation__link">Intro</a>
+                    <li class="subnavigation__list-item ">
+                        <a href="/intro/" class="subnavigation__link">Intro</a>
                     </li>
                 
             
@@ -334,13 +231,13 @@ must pass for access to be granted.</p>
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../methods/" class="subnavigation__link">Methods</a>
+        <a href="/methods/" class="subnavigation__link">Methods</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../examples/" class="subnavigation__link">Examples</a>
+        <a href="/examples/" class="subnavigation__link">Examples</a>
     </li>
 
                             
@@ -351,7 +248,7 @@ must pass for access to be granted.</p>
             
                 
     <li class="subnavigation__list-item ">
-        <a href="../migration/to-v3-0/" class="subnavigation__link">v2.X to v3.0</a>
+        <a href="/migration/to-v3-0/" class="subnavigation__link">v2.X to v3.0</a>
     </li>
 
             
@@ -434,11 +331,11 @@ must pass for access to be granted.</p>
 </footer>
 
     <script>
-        var base_url = '..',
+        var base_url = '/',
             siteName = 'zend-permissions-rbac';
     </script>
-    <script src="../js/scripts-8d7ae56abf.js"></script>
-        <script src="../search/main.js"></script>
+    <script src="//js/scripts-8d7ae56abf.js"></script>
+        <script src="/search/main.js"></script>
 
     
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
