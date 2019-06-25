@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- Nothing.
+- [#43](https://github.com/zendframework/zend-permissions-rbac/pull/43) adds support for PHP 7.3.
 
 ### Changed
 
