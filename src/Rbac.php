@@ -53,6 +53,12 @@ class Rbac
             );
         }
 
+        if ($this->createMissingRoles) {
+            foreach ($role->getChildren() as $child) {
+                $this->addRole($child);
+            }
+        }
+
         if ($parents) {
             $parents = is_array($parents) ? $parents : [$parents];
             foreach ($parents as $parent) {
