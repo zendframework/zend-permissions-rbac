@@ -22,7 +22,7 @@ matrix:
     - php: 7.1
       env:
         - DEPS=locked
-        - CHECK_CS=true
+        - CS_CHECK=true
     - php: 7.1
       env:
         - DEPS=latest
