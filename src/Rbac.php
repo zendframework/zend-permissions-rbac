@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace Zend\Permissions\Rbac;
 
+use ZendTest\Permissions\Rbac\RoleTest;
+
 class Rbac
 {
     /**
@@ -83,12 +85,71 @@ class Rbac
         }
 
         if (is_string($role)) {
-            return isset($this->roles[$role]);
+            return $this->roleSearchIncludingChildren($this->roles, $role);
         }
 
-        $roleName = $role->getName();
-        return isset($this->roles[$roleName])
-            && $this->roles[$roleName] === $role;
+        return $this->roleSearchIncludingChildren($this->roles, $role->getName());
+    }
+
+    /**
+     * @param $obj|Array
+     * @param $needle|String
+     * @return bool
+     */
+    private function roleSearchIncludingChildren($obj, $needle) : bool
+    {
+        $rv = 0;
+
+        if (is_array($obj))
+        {
+
+            foreach ($obj as $role)
+            {
+
+                $roleName = $role->getName();
+                if ($roleName === $needle)
+                {
+                    $rv++;
+                }
+
+                $rv += $this->roleSearchIncludingChildren($role, $needle);
+            }
+
+        }
+        else {
+
+            $children = $obj->getChildren();
+
+            // need to make sure the children are arrays (meaning they are added correctly)
+            if (! is_array($children)) {
+                return $rv ? true : false;
+            }
+
+            if ( ! count($children) )
+            {
+
+                return $rv ? true : false;
+
+            }
+            else {
+
+                foreach ($children as $child)
+                {
+
+                    $roleName = $child->getName();
+
+                    if ($roleName === $needle)
+                    {
+                        $rv++;
+                    }
+
+                    $rv += $this->roleSearchIncludingChildren($child, $needle);
+
+                }
+            }
+        }
+
+        return $rv ? true : false;
     }
 
     /**
