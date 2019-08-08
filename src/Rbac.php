@@ -103,10 +103,9 @@ class Rbac
                     if ($roleName === $needle) {
                         $rv++;
                     }
-                } else if (is_object($needle) && (get_class($needle) == 'Zend\Permissions\Rbac\Role') ) {
+                } elseif (is_object($needle) && (get_class($needle) == 'Zend\Permissions\Rbac\Role')) {
                     if ($roleName == $needle->getName()) {
                         $rv++;
-
                     }
                 }
                 $rv += $this->roleSearchIncludingChildren($role, $needle);
@@ -117,8 +116,8 @@ class Rbac
             // need to make sure the children are arrays (meaning they are added correctly)
             if (! is_array($children)) {
                 return $rv ? true : false;
-            } else if (! count($children)) {
-                if (is_object($needle) && (get_class($needle) == 'Zend\Permissions\Rbac\Role') ) {
+            } elseif (! count($children)) {
+                if (is_object($needle) && (get_class($needle) == 'Zend\Permissions\Rbac\Role')) {
                     if ($obj->getName() == $needle->getName()) {
                         $rv++;
                     }
@@ -130,12 +129,11 @@ class Rbac
                         if ($roleName === $needle) {
                             $rv++;
                         }
-                    } else if (is_object($needle) && (get_class($needle) == 'Zend\Permissions\Rbac\Role') ) {
+                    } elseif (is_object($needle) && (get_class($needle) == 'Zend\Permissions\Rbac\Role')) {
                         if ($roleName == $needle->getName()) {
                             $rv++;
                         }
                     }
-
                     $rv += $this->roleSearchIncludingChildren($child, $needle);
                 }
             }
