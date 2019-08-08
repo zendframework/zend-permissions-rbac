@@ -121,7 +121,7 @@ class RbacTest extends TestCase
         // check that 'snafu' role and $snafu are different
         $this->assertNotEquals($snafu, $this->rbac->getRole('snafu'));
         $this->assertTrue($this->rbac->hasRole('snafu'));
-        $this->assertTrue($this->rbac->hasRole($snafu));
+        $this->assertFalse($this->rbac->hasRole($snafu));
 
         // check child is found
         $parent = new TestAsset\RoleTest('parent');
