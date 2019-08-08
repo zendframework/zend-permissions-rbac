@@ -100,51 +100,32 @@ class Rbac
     {
         $rv = 0;
 
-        if (is_array($obj))
-        {
-
-            foreach ($obj as $role)
-            {
-
+        if (is_array($obj)) {
+            foreach ($obj as $role) {
                 $roleName = $role->getName();
-                if ($roleName === $needle)
-                {
+                if ($roleName === $needle) {
                     $rv++;
                 }
 
                 $rv += $this->roleSearchIncludingChildren($role, $needle);
             }
-
-        }
-        else {
-
+        } else {
             $children = $obj->getChildren();
 
             // need to make sure the children are arrays (meaning they are added correctly)
             if (! is_array($children)) {
                 return $rv ? true : false;
             }
-
-            if ( ! count($children) )
-            {
-
+            if (! count($children)) {
                 return $rv ? true : false;
-
-            }
-            else {
-
-                foreach ($children as $child)
-                {
-
+            } else {
+                foreach ($children as $child) {
                     $roleName = $child->getName();
-
-                    if ($roleName === $needle)
-                    {
+                    if ($roleName === $needle) {
                         $rv++;
                     }
 
                     $rv += $this->roleSearchIncludingChildren($child, $needle);
-
                 }
             }
         }
@@ -157,15 +138,46 @@ class Rbac
      *
      * @throws Exception\InvalidArgumentException if role is not found.
      */
-    public function getRole(string $roleName) : RoleInterface
+    public function getRole(string $needle) : RoleInterface
     {
-        if (! isset($this->roles[$roleName])) {
-            throw new Exception\InvalidArgumentException(sprintf(
-                'No role with name "%s" could be found',
-                $roleName
-            ));
+        // tricky thing here is that $this->roles are an array of RoleInterface objects
+        foreach ($this->roles as $role) {
+            if ($role->getName() == $needle) {
+                return $role;
+            } else {
+                $role = $this->getRoleSearchingChildren($role, $needle);
+                if ($role != null) {
+                    return $role;
+                }
+            }
         }
-        return $this->roles[$roleName];
+
+        throw new Exception\InvalidArgumentException(sprintf(
+            'No role with name "%s" could be found',
+            $needle
+        ));
+    }
+
+    /**
+     * @param $obj RoleInterface
+     * @param $needle String
+     * @return null|RoleInterface
+     */
+    private function getRoleSearchingChildren($obj, $needle)
+    {
+        if (($obj instanceof RoleInterface) && ($obj->getName() == $needle)) {
+            return $obj;
+        } else {
+            $children = $obj->getChildren();
+            if (is_array($children) && ($children != null)) {
+                $result = '';
+                foreach ($children as $child) {
+                    $result = $this->getRoleSearchingChildren($child, $needle);
+                }
+                return $result;
+            }
+        }
+        return null;
     }
 
     /**
