@@ -2,27 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
      <loc>https://docs.zendframework.com/zend-permissions-rbac/</loc>
-     <lastmod>2019-08-06</lastmod>
+     <lastmod>2019-10-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-permissions-rbac/intro/</loc>
-     <lastmod>2019-08-06</lastmod>
+     <lastmod>2019-10-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-permissions-rbac/methods/</loc>
-     <lastmod>2019-08-06</lastmod>
+     <lastmod>2019-10-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-permissions-rbac/examples/</loc>
-     <lastmod>2019-08-06</lastmod>
+     <lastmod>2019-10-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-permissions-rbac/migration/to-v3-0/</loc>
-     <lastmod>2019-08-06</lastmod>
+     <lastmod>2019-10-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>

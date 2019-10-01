@@ -280,25 +280,23 @@ document details the changes</p>
 <p>The primary change is the <code>Zend\Permissions\Rbac\AssertionInterface::assert()</code>
 method definition.</p>
 <p>The new <code>assert</code> method has the following signature:</p>
-<pre class="codehilite"><code class="language-php">namespace Zend\Permissions\Rbac;
+<p> <pre class=codehilite><code class=language-php>namespace Zend\Permissions\Rbac;
 
 public function assert(
     Rbac $rbac,
     RoleInterface $role,
     string $permission
-) : bool</code></pre>
-
+) : bool</code></pre></p>
 <p>The version 2 releases defined the method such that it only accepted a single
 parameter, <code>Rbac $rbac</code>. Version 3 adds the <code>$role</code> and <code>$permission</code>
 parameters. This simplifies implementation of dynamic assertions using the role
 and the permission information.</p>
 <p>For instance, imagine you want to disable a specific permission <code>foo</code> for an
 <code>admin</code> role; you can implement that as follows:</p>
-<pre class="codehilite"><code class="language-php">public function assert(Rbac $rbac, RoleInterface $role, string $permission) : bool
+<p> <pre class=codehilite><code class=language-php>public function assert(Rbac $rbac, RoleInterface $role, string $permission) : bool
 {
     return ! ($permission === 'foo' &amp;&amp; $role-&gt;getName() === 'admin');
-}</code></pre>
-
+}</code></pre></p>
 <p>If you were previously implementing <code>AssertionInterface</code>, you will need to
 update the <code>assert()</code> signature to match the changes in version 3.</p>
 <p>If you were creating assertions as PHP callables, you may continue to use the
@@ -307,7 +305,7 @@ arguments should they assist you in creating more complex, dynamic assertions.</
 <h2 id="roleinterface">RoleInterface</h2>
 <p><code>Zend\Permissions\Rbac\RoleInterface</code> also received a number of changes,
 including type hints and method name changes.</p>
-<h3 id="type-hints">Type hints</h3>
+<h3>Type hints</h3>
 <p>With the update to <a href="#minimum-supported-php-version">PHP 7.1</a>, we also updated
 the <code>RoleInterface</code> to provide:</p>
 <ul>
@@ -316,18 +314,18 @@ the <code>RoleInterface</code> to provide:</p>
 </ul>
 <p>You will need to examine the <code>RoleInterface</code> definitions to determine what
 changes to make to your implementations.</p>
-<h3 id="setparent-becomes-addparent">setParent becomes addParent</h3>
+<h3>setParent becomes addParent</h3>
 <p>In version 3, we renamed the method <code>Role::setParent()</code> to <code>Role::addParent()</code>.
 This naming is more consistent with other method names, such as
 <code>Role::addChild()</code>, and also makes clear that more than one parent may be
 provided to any given role.</p>
-<h3 id="getparent-becomes-getparents">getParent becomes getParents</h3>
+<h3>getParent becomes getParents</h3>
 <p>In line with the previous change, <code>getParent()</code> was also renamed to
 <code>getParents()</code>, which returns an array of <code>RoleInterface</code> instances.</p>
-<h3 id="removed-support-for-string-arguments-in-roleaddchild">Removed support for string arguments in Role::addChild</h3>
+<h3>Removed support for string arguments in Role::addChild</h3>
 <p>Version 3 no longer allows adding a child using a string role name; you may only
 provide <code>RoleInterface</code> instances.</p>
-<h3 id="adds-getchildren">Adds getChildren</h3>
+<h3>Adds getChildren</h3>
 <p>Since roles may have multiple children, the method <code>getChildren()</code> was added; it
 returns an array of <code>RoleInterface</code> instances.</p>
 
@@ -359,7 +357,7 @@ returns an array of <code>RoleInterface</code> instances.</p>
     <div class="help-wanted">
         <p>
             Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/zendframework/zend-permissions-rbac/edit/master/doc/migration/to-v3-0.md" target="_blank" class="help-wanted__link">
+            <a href="https://github.com/zendframework/zend-permissions-rbac/edit/master/doc/book/migration/to-v3-0.md" target="_blank" class="help-wanted__link">
                 Edit this page on GitHub!
             </a>
         </p>
