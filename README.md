@@ -2,7 +2,7 @@
 
 > ## Repository abandoned 2019-12-31
 >
-> This repository has moved to laminas/laminas-permissions-rbac.
+> This repository has moved to [laminas/laminas-permissions-rbac](https://github.com/laminas/laminas-permissions-rbac).
 
 [![Build Status](https://secure.travis-ci.org/zendframework/zend-permissions-rbac.svg?branch=master)](https://secure.travis-ci.org/zendframework/zend-permissions-rbac)
 [![Coverage Status](https://coveralls.io/repos/zendframework/zend-permissions-rbac/badge.svg?branch=master)](https://coveralls.io/r/zendframework/zend-permissions-rbac?branch=master)
