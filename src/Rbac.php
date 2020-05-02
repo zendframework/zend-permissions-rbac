@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace Zend\Permissions\Rbac;
 
+use ZendTest\Permissions\Rbac\RoleTest;
+
 class Rbac
 {
     /**
@@ -82,13 +84,62 @@ class Rbac
             );
         }
 
-        if (is_string($role)) {
-            return isset($this->roles[$role]);
+        return $this->roleSearchIncludingChildren($this->roles, $role);
+    }
+
+    /**
+     * @param $obj|Array
+     * @param $needle|String
+     * @return bool
+     */
+    private function roleSearchIncludingChildren($obj, $needle) : bool
+    {
+        $rv = 0;
+
+        if (is_array($obj)) {
+            foreach ($obj as $role) {
+                $roleName = $role->getName();
+                if (is_string($needle)) {
+                    if ($roleName === $needle) {
+                        $rv++;
+                    }
+                } elseif (is_object($needle) && (get_class($needle) == 'Zend\Permissions\Rbac\Role')) {
+                    if ($roleName == $needle->getName()) {
+                        $rv++;
+                    }
+                }
+                $rv += $this->roleSearchIncludingChildren($role, $needle);
+            }
+        } else {
+            $children = $obj->getChildren();
+
+            // need to make sure the children are arrays (meaning they are added correctly)
+            if (! is_array($children)) {
+                return $rv ? true : false;
+            } elseif (! count($children)) {
+                if (is_object($needle) && (get_class($needle) == 'Zend\Permissions\Rbac\Role')) {
+                    if ($obj->getName() == $needle->getName()) {
+                        $rv++;
+                    }
+                }
+            } else {
+                foreach ($children as $child) {
+                    $roleName = $child->getName();
+                    if (is_string($needle)) {
+                        if ($roleName === $needle) {
+                            $rv++;
+                        }
+                    } elseif (is_object($needle) && (get_class($needle) == 'Zend\Permissions\Rbac\Role')) {
+                        if ($roleName == $needle->getName()) {
+                            $rv++;
+                        }
+                    }
+                    $rv += $this->roleSearchIncludingChildren($child, $needle);
+                }
+            }
         }
 
-        $roleName = $role->getName();
-        return isset($this->roles[$roleName])
-            && $this->roles[$roleName] === $role;
+        return $rv ? true : false;
     }
 
     /**
@@ -96,15 +147,46 @@ class Rbac
      *
      * @throws Exception\InvalidArgumentException if role is not found.
      */
-    public function getRole(string $roleName) : RoleInterface
+    public function getRole(string $needle) : RoleInterface
     {
-        if (! isset($this->roles[$roleName])) {
-            throw new Exception\InvalidArgumentException(sprintf(
-                'No role with name "%s" could be found',
-                $roleName
-            ));
+        // tricky thing here is that $this->roles are an array of RoleInterface objects
+        foreach ($this->roles as $role) {
+            if ($role->getName() == $needle) {
+                return $role;
+            } else {
+                $role = $this->getRoleSearchingChildren($role, $needle);
+                if ($role != null) {
+                    return $role;
+                }
+            }
         }
-        return $this->roles[$roleName];
+
+        throw new Exception\InvalidArgumentException(sprintf(
+            'No role with name "%s" could be found',
+            $needle
+        ));
+    }
+
+    /**
+     * @param $obj RoleInterface
+     * @param $needle String
+     * @return null|RoleInterface
+     */
+    private function getRoleSearchingChildren($obj, $needle)
+    {
+        if (($obj instanceof RoleInterface) && ($obj->getName() == $needle)) {
+            return $obj;
+        } else {
+            $children = $obj->getChildren();
+            if (is_array($children) && ($children != null)) {
+                $result = '';
+                foreach ($children as $child) {
+                    $result = $this->getRoleSearchingChildren($child, $needle);
+                }
+                return $result;
+            }
+        }
+        return null;
     }
 
     /**

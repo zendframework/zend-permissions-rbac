@@ -122,6 +122,13 @@ class RbacTest extends TestCase
         $this->assertNotEquals($snafu, $this->rbac->getRole('snafu'));
         $this->assertTrue($this->rbac->hasRole('snafu'));
         $this->assertFalse($this->rbac->hasRole($snafu));
+
+        // check child is found
+        $parent = new TestAsset\RoleTest('parent');
+        $child = new TestAsset\RoleTest('child');
+        $parent->addChild($child);
+        $this->rbac->addRole($parent);
+        $this->assertTrue($this->rbac->hasRole('child'));
     }
 
     public function testHasRoleWithInvalidElement()
