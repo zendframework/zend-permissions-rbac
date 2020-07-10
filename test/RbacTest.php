@@ -196,6 +196,10 @@ class RbacTest extends TestCase
     {
         $role = $this->getMockForAbstractClass(Rbac\RoleInterface::class);
         $this->rbac->setCreateMissingRoles(true);
+        $role->expects($this->any())
+            ->method('getChildren')
+            ->will($this->returnValue([]));
+
         $this->rbac->addRole($role, 'parent');
 
         $role->expects($this->any())
@@ -302,5 +306,20 @@ class RbacTest extends TestCase
     public function testEmptyRoles()
     {
         $this->assertEquals([], $this->rbac->getRoles());
+    }
+
+    /**
+     * @see https://github.com/zendframework/zend-permissions-rbac/issues/45
+     */
+    public function testHasRoleWithChildrenRoles()
+    {
+        $foo = new Rbac\Role('foo');
+        $bar = new Rbac\Role('bar');
+
+        $this->rbac->setCreateMissingRoles(true);
+        $foo->addChild($bar);
+        $this->rbac->addRole($foo);
+
+        $this->assertTrue($this->rbac->hasRole('bar'));
     }
 }
